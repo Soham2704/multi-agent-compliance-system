@@ -1,0 +1,578 @@
+[
+    {
+        "state": [
+            500,
+            0,
+            6
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            500,
+            0,
+            9
+        ],
+        "correct_action": 2
+    },
+    {
+        "state": [
+            500,
+            0,
+            12
+        ],
+        "correct_action": 4
+    },
+    {
+        "state": [
+            500,
+            0,
+            18
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            500,
+            0,
+            24
+        ],
+        "correct_action": 2
+    },
+    {
+        "state": [
+            500,
+            0,
+            30
+        ],
+        "correct_action": 3
+    },
+    {
+        "state": [
+            500,
+            1,
+            6
+        ],
+        "correct_action": 1
+    },
+    {
+        "state": [
+            500,
+            1,
+            9
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            500,
+            1,
+            12
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            500,
+            1,
+            18
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            500,
+            1,
+            24
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            500,
+            1,
+            30
+        ],
+        "correct_action": 1
+    },
+    {
+        "state": [
+            500,
+            2,
+            6
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            500,
+            2,
+            9
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            500,
+            2,
+            12
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            500,
+            2,
+            18
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            500,
+            2,
+            24
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            500,
+            2,
+            30
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            1500,
+            0,
+            6
+        ],
+        "correct_action": 3
+    },
+    {
+        "state": [
+            1500,
+            0,
+            9
+        ],
+        "correct_action": 3
+    },
+    {
+        "state": [
+            1500,
+            0,
+            12
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            1500,
+            0,
+            18
+        ],
+        "correct_action": 3
+    },
+    {
+        "state": [
+            1500,
+            0,
+            24
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            1500,
+            0,
+            30
+        ],
+        "correct_action": 3
+    },
+    {
+        "state": [
+            1500,
+            1,
+            6
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            1500,
+            1,
+            9
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            1500,
+            1,
+            12
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            1500,
+            1,
+            18
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            1500,
+            1,
+            24
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            1500,
+            1,
+            30
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            1500,
+            2,
+            6
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            1500,
+            2,
+            9
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            1500,
+            2,
+            12
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            1500,
+            2,
+            18
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            1500,
+            2,
+            24
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            1500,
+            2,
+            30
+        ],
+        "correct_action": 3
+    },
+    {
+        "state": [
+            3000,
+            0,
+            6
+        ],
+        "correct_action": 4
+    },
+    {
+        "state": [
+            3000,
+            0,
+            9
+        ],
+        "correct_action": 4
+    },
+    {
+        "state": [
+            3000,
+            0,
+            12
+        ],
+        "correct_action": 4
+    },
+    {
+        "state": [
+            3000,
+            0,
+            18
+        ],
+        "correct_action": 4
+    },
+    {
+        "state": [
+            3000,
+            0,
+            24
+        ],
+        "correct_action": 4
+    },
+    {
+        "state": [
+            3000,
+            0,
+            30
+        ],
+        "correct_action": 3
+    },
+    {
+        "state": [
+            3000,
+            1,
+            6
+        ],
+        "correct_action": 1
+    },
+    {
+        "state": [
+            3000,
+            1,
+            9
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            3000,
+            1,
+            12
+        ],
+        "correct_action": 1
+    },
+    {
+        "state": [
+            3000,
+            1,
+            18
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            3000,
+            1,
+            24
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            3000,
+            1,
+            30
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            3000,
+            2,
+            6
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            3000,
+            2,
+            9
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            3000,
+            2,
+            12
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            3000,
+            2,
+            18
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            3000,
+            2,
+            24
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            3000,
+            2,
+            30
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            4500,
+            0,
+            6
+        ],
+        "correct_action": 4
+    },
+    {
+        "state": [
+            4500,
+            0,
+            9
+        ],
+        "correct_action": 3
+    },
+    {
+        "state": [
+            4500,
+            0,
+            12
+        ],
+        "correct_action": 4
+    },
+    {
+        "state": [
+            4500,
+            0,
+            18
+        ],
+        "correct_action": 3
+    },
+    {
+        "state": [
+            4500,
+            0,
+            24
+        ],
+        "correct_action": 3
+    },
+    {
+        "state": [
+            4500,
+            0,
+            30
+        ],
+        "correct_action": 4
+    },
+    {
+        "state": [
+            4500,
+            1,
+            6
+        ],
+        "correct_action": 1
+    },
+    {
+        "state": [
+            4500,
+            1,
+            9
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            4500,
+            1,
+            12
+        ],
+        "correct_action": 4
+    },
+    {
+        "state": [
+            4500,
+            1,
+            18
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            4500,
+            1,
+            24
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            4500,
+            1,
+            30
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            4500,
+            2,
+            6
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            4500,
+            2,
+            9
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            4500,
+            2,
+            12
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            4500,
+            2,
+            18
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            4500,
+            2,
+            24
+        ],
+        "correct_action": 0
+    },
+    {
+        "state": [
+            4500,
+            2,
+            30
+        ],
+        "correct_action": 0
+    }
+]

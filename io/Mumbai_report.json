@@ -1,0 +1,23 @@
+{
+    "input_case": {
+        "plot_size": 2000,
+        "location": "urban",
+        "road_width": 20
+    },
+    "rag_analysis": "**Summary:** In urban areas, for a 2000 sq. m plot with a 20m wide abutting road, you must provide a 15% Layout Open Space (LOS) of at least 125 sq. m, with a minimum dimension of 7.5m.  The length of the LOS cannot exceed 2.5 times its average width if the average width is less than 16.6m.  You can also include specific structures within the LOS like elevated water tanks, which can occupy up to 10% of the LOS, or recreational structures (if the LOS is 1000 sq. m or larger) up to a maximum of 15% BUA and 10% plinth area of the required LOS.\n\n**Source:** The summary above is based on the official rules found at the following points in the Development Control and Promotion Regulation-2034 document: ['PART - IV REQUIREMENT OF SITE AND LAYOUT PARAS (i)', '(b)', '(c)', '(d)', '(g)']",
+    "entitlement_calculation": {
+        "input_rule": "road_width_gt_18m_bonus",
+        "rule_value": 0.5,
+        "explanation": "The rule 'road_width_gt_18m_bonus' corresponds to a value of 0.5."
+    },
+    "envelope_calculation": {
+        "inputs": {
+            "plot_area": 2000,
+            "setback_area": 150
+        },
+        "formula": "allowable_envelope = plot_area - (setback_area * 2)",
+        "calculation": "1700 = 2000 - (150 * 2)",
+        "result": 1700
+    },
+    "rl_optimal_action": 1
+}

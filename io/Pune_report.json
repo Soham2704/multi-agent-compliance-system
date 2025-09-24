@@ -1,0 +1,23 @@
+{
+    "input_case": {
+        "plot_size": 800,
+        "location": "suburban",
+        "road_width": 10
+    },
+    "rag_analysis": "**Summary:** In suburban areas, a plot size of 800 sq. m with a 10 m wide road allows for an FSI of 2.0, composed of a base FSI of 1.0, an additional FSI of 0.5 through TDR, and another 0.5 by premium payment.  A Layout Open Space (LOS) of 15% (120 sq. m minimum, with at least one dimension 7.5m or greater) is required and tree planting is mandatory within this space.\n\n**Source:** The summary above is based on the official rules found at the following points in the Development Control and Promotion Regulation-2034 document:\n['PART - IV REQUIREMENT OF SITE AND LAYOUT PARAS (i)', 'PART - IV (b) Minimum area', 'PART - IV (c) Minimum dimensions', 'PART - IV (f) Tree growth', 'PART - V Sr No III iii']",
+    "entitlement_calculation": {
+        "input_rule": "road_width_gt_18m_bonus",
+        "rule_value": 0.5,
+        "explanation": "The rule 'road_width_gt_18m_bonus' corresponds to a value of 0.5."
+    },
+    "envelope_calculation": {
+        "inputs": {
+            "plot_area": 800,
+            "setback_area": 150
+        },
+        "formula": "allowable_envelope = plot_area - (setback_area * 2)",
+        "calculation": "500 = 800 - (150 * 2)",
+        "result": 500
+    },
+    "rl_optimal_action": 0
+}

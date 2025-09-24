@@ -1,0 +1,362 @@
+[
+    {
+        "plot_size": 500,
+        "location": "urban",
+        "road_width": 6
+    },
+    {
+        "plot_size": 500,
+        "location": "urban",
+        "road_width": 9
+    },
+    {
+        "plot_size": 500,
+        "location": "urban",
+        "road_width": 12
+    },
+    {
+        "plot_size": 500,
+        "location": "urban",
+        "road_width": 18
+    },
+    {
+        "plot_size": 500,
+        "location": "urban",
+        "road_width": 24
+    },
+    {
+        "plot_size": 500,
+        "location": "urban",
+        "road_width": 30
+    },
+    {
+        "plot_size": 500,
+        "location": "suburban",
+        "road_width": 6
+    },
+    {
+        "plot_size": 500,
+        "location": "suburban",
+        "road_width": 9
+    },
+    {
+        "plot_size": 500,
+        "location": "suburban",
+        "road_width": 12
+    },
+    {
+        "plot_size": 500,
+        "location": "suburban",
+        "road_width": 18
+    },
+    {
+        "plot_size": 500,
+        "location": "suburban",
+        "road_width": 24
+    },
+    {
+        "plot_size": 500,
+        "location": "suburban",
+        "road_width": 30
+    },
+    {
+        "plot_size": 500,
+        "location": "rural",
+        "road_width": 6
+    },
+    {
+        "plot_size": 500,
+        "location": "rural",
+        "road_width": 9
+    },
+    {
+        "plot_size": 500,
+        "location": "rural",
+        "road_width": 12
+    },
+    {
+        "plot_size": 500,
+        "location": "rural",
+        "road_width": 18
+    },
+    {
+        "plot_size": 500,
+        "location": "rural",
+        "road_width": 24
+    },
+    {
+        "plot_size": 500,
+        "location": "rural",
+        "road_width": 30
+    },
+    {
+        "plot_size": 1500,
+        "location": "urban",
+        "road_width": 6
+    },
+    {
+        "plot_size": 1500,
+        "location": "urban",
+        "road_width": 9
+    },
+    {
+        "plot_size": 1500,
+        "location": "urban",
+        "road_width": 12
+    },
+    {
+        "plot_size": 1500,
+        "location": "urban",
+        "road_width": 18
+    },
+    {
+        "plot_size": 1500,
+        "location": "urban",
+        "road_width": 24
+    },
+    {
+        "plot_size": 1500,
+        "location": "urban",
+        "road_width": 30
+    },
+    {
+        "plot_size": 1500,
+        "location": "suburban",
+        "road_width": 6
+    },
+    {
+        "plot_size": 1500,
+        "location": "suburban",
+        "road_width": 9
+    },
+    {
+        "plot_size": 1500,
+        "location": "suburban",
+        "road_width": 12
+    },
+    {
+        "plot_size": 1500,
+        "location": "suburban",
+        "road_width": 18
+    },
+    {
+        "plot_size": 1500,
+        "location": "suburban",
+        "road_width": 24
+    },
+    {
+        "plot_size": 1500,
+        "location": "suburban",
+        "road_width": 30
+    },
+    {
+        "plot_size": 1500,
+        "location": "rural",
+        "road_width": 6
+    },
+    {
+        "plot_size": 1500,
+        "location": "rural",
+        "road_width": 9
+    },
+    {
+        "plot_size": 1500,
+        "location": "rural",
+        "road_width": 12
+    },
+    {
+        "plot_size": 1500,
+        "location": "rural",
+        "road_width": 18
+    },
+    {
+        "plot_size": 1500,
+        "location": "rural",
+        "road_width": 24
+    },
+    {
+        "plot_size": 1500,
+        "location": "rural",
+        "road_width": 30
+    },
+    {
+        "plot_size": 3000,
+        "location": "urban",
+        "road_width": 6
+    },
+    {
+        "plot_size": 3000,
+        "location": "urban",
+        "road_width": 9
+    },
+    {
+        "plot_size": 3000,
+        "location": "urban",
+        "road_width": 12
+    },
+    {
+        "plot_size": 3000,
+        "location": "urban",
+        "road_width": 18
+    },
+    {
+        "plot_size": 3000,
+        "location": "urban",
+        "road_width": 24
+    },
+    {
+        "plot_size": 3000,
+        "location": "urban",
+        "road_width": 30
+    },
+    {
+        "plot_size": 3000,
+        "location": "suburban",
+        "road_width": 6
+    },
+    {
+        "plot_size": 3000,
+        "location": "suburban",
+        "road_width": 9
+    },
+    {
+        "plot_size": 3000,
+        "location": "suburban",
+        "road_width": 12
+    },
+    {
+        "plot_size": 3000,
+        "location": "suburban",
+        "road_width": 18
+    },
+    {
+        "plot_size": 3000,
+        "location": "suburban",
+        "road_width": 24
+    },
+    {
+        "plot_size": 3000,
+        "location": "suburban",
+        "road_width": 30
+    },
+    {
+        "plot_size": 3000,
+        "location": "rural",
+        "road_width": 6
+    },
+    {
+        "plot_size": 3000,
+        "location": "rural",
+        "road_width": 9
+    },
+    {
+        "plot_size": 3000,
+        "location": "rural",
+        "road_width": 12
+    },
+    {
+        "plot_size": 3000,
+        "location": "rural",
+        "road_width": 18
+    },
+    {
+        "plot_size": 3000,
+        "location": "rural",
+        "road_width": 24
+    },
+    {
+        "plot_size": 3000,
+        "location": "rural",
+        "road_width": 30
+    },
+    {
+        "plot_size": 4500,
+        "location": "urban",
+        "road_width": 6
+    },
+    {
+        "plot_size": 4500,
+        "location": "urban",
+        "road_width": 9
+    },
+    {
+        "plot_size": 4500,
+        "location": "urban",
+        "road_width": 12
+    },
+    {
+        "plot_size": 4500,
+        "location": "urban",
+        "road_width": 18
+    },
+    {
+        "plot_size": 4500,
+        "location": "urban",
+        "road_width": 24
+    },
+    {
+        "plot_size": 4500,
+        "location": "urban",
+        "road_width": 30
+    },
+    {
+        "plot_size": 4500,
+        "location": "suburban",
+        "road_width": 6
+    },
+    {
+        "plot_size": 4500,
+        "location": "suburban",
+        "road_width": 9
+    },
+    {
+        "plot_size": 4500,
+        "location": "suburban",
+        "road_width": 12
+    },
+    {
+        "plot_size": 4500,
+        "location": "suburban",
+        "road_width": 18
+    },
+    {
+        "plot_size": 4500,
+        "location": "suburban",
+        "road_width": 24
+    },
+    {
+        "plot_size": 4500,
+        "location": "suburban",
+        "road_width": 30
+    },
+    {
+        "plot_size": 4500,
+        "location": "rural",
+        "road_width": 6
+    },
+    {
+        "plot_size": 4500,
+        "location": "rural",
+        "road_width": 9
+    },
+    {
+        "plot_size": 4500,
+        "location": "rural",
+        "road_width": 12
+    },
+    {
+        "plot_size": 4500,
+        "location": "rural",
+        "road_width": 18
+    },
+    {
+        "plot_size": 4500,
+        "location": "rural",
+        "road_width": 24
+    },
+    {
+        "plot_size": 4500,
+        "location": "rural",
+        "road_width": 30
+    }
+]
