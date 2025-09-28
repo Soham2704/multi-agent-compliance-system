@@ -1,0 +1,28 @@
+{
+    "input_case": {
+        "case_id": "pune_001",
+        "city": "Pune",
+        "document": "Pune_DCR.pdf",
+        "parameters": {
+            "plot_size": 800,
+            "location": "suburban",
+            "road_width": 10
+        }
+    },
+    "rag_analysis": "Based on your query and the provided regulatory context, here is a detailed analysis report.\n\n### **Applicable Regulations**\n\n#### **1. Marginal Open Spaces (Setbacks)**\nBased on the provided plot size and road width, the following minimum setbacks are applicable for a property in a non-congested area:\n*   **Front Margin:**\n    *   **3.00 meters** for a purely residential building.\n    *   **4.50 meters** for a residential building with mixed-use.\n*   **Side Margin:** **1.50 meters** on each side.\n*   **Rear Margin:** **1.50 meters**.\n*   **Important Note:** The regulations state that for buildings of G+2 (Ground plus two floors) or Stilt + 3 floors structure, the side and rear margins \"shall be more than permissible,\" implying that these minimums may increase with building height. The exact increase is not specified in the provided text.\n\n*(Reference: DCPR-2018 FOR PMRDA, Page 81, Table, Sr. No. 6)*\n\n#### **2. Floor Space Index (FSI)**\nThe regulations for non-congested areas are not fully detailed in the provided context, but an analysis of the \"PROFORMA - I\" for a complex suggests the following:\n*   **Basic FSI:** The document implies a basic FSI of **1.1**.\n*   **Basic Permissible Built-up Area:** For your 800 sq. m. plot, this calculates to: 800 sq. m. \u00d7 1.1 = **880 sq. m.**\n*   **Additional FSI:** The proforma indicates that the total permissible built-up area can be increased through mechanisms like \"Premium FSI,\" \"TDR area,\" and other \"Additional FSI.\"\n*   **Maximum Permissible FSI:** The total FSI that can be utilized is dependent on the road width as per \"Regulation no. 15.4,\" which is not available in the provided context.\n\n*(Reference: DCPR-2018 FOR PMRDA, Page 150, PROFORMA - I, Items 9, 10 & 12)*\n\n#### **3. Inclusive Housing**\n*   The regulations may require a provision for Inclusive Housing. The proforma indicates a requirement of **20% of the Net Area of the Plot**.\n*   **Calculated Area:** For your 800 sq. m. plot, this would be 0.20 \u00d7 800 sq. m. = **160 sq. m.**\n*   The specific conditions (like a minimum plot size threshold) that trigger this requirement are not mentioned in the provided text.\n\n*(Reference: DCPR-2018 FOR PMRDA, Page 150, PROFORMA - I, Item 15)*\n\n#### **4. Other Building & Plot Regulations**\n*   **Projections:** Construction of ottas, railings, or barricades is not permitted in the front marginal open space. However, steps are permitted within 1.2 m. from the building line.\n*   **Garages:** If the building includes a stilt or basement for parking, a separate garage is not permitted.\n*   **Plot Dimensions:** For new plotted layouts, the plot width-to-depth ratio should be between 1:1.5 and 1:2.5, as far as possible.\n\n*(Reference: DCPR-2018 FOR PMRDA, Page 81, Notes 5, 6 & 9)*\n\n***\n\n### **Key Missing Information**\nA complete and definitive analysis requires the following information which was not in your query or the provided context:\n*   **Proposed Building Use:** Is the project purely residential or a mix of residential and commercial? This directly impacts the required front margin.\n*   **Proposed Building Height:** The intended number of floors is needed to determine if the minimum side and rear margins need to be increased.\n*   **Official Land Zone:** \"Suburban\" is a general term. The official designation in the Development Plan (e.g., R-1, R-2) is needed to confirm the precise FSI and use permissions.\n*   **Full Text of Regulation 15.4:** This regulation is critical as it defines the maximum permissible FSI (including TDR and Premium FSI) based on the 10-meter road width.\n*   **Inclusive Housing Applicability:** The specific rules defining when the 20% inclusive housing reservation is mandatory are not provided.\n\n### **Next Steps**\nTo proceed with your development plan, we recommend the following actions:\n1.  **Confirm Property Details:** Obtain the official land records (e.g., 7/12 extract) to confirm the exact land use zone as per the PMRDA Development Plan.\n2.  **Finalize Building Use:** Decide whether the building will be purely residential or mixed-use to finalize the applicable front setback.\n3.  **Consult the Full DCPR-2018:** Access the complete Development Control and Promotion Regulations (DCPR) for PMRDA to review the missing sections, especially Regulation 15.4, to understand the maximum FSI potential and any height-related setback increases.\n4.  **Verify Special Requirements:** Check the full regulations for the specific conditions that trigger the Inclusive Housing requirement for a plot of your size.\n5.  **Engage a Local Professional:** It is advisable to consult a local architect or licensed engineer who is an expert in PMRDA regulations to prepare a formal building plan for submission and approval.",
+    "entitlement_calculation": {
+        "input_rule": "road_width_gt_18m_bonus",
+        "rule_value": 0.5,
+        "explanation": "The rule 'road_width_gt_18m_bonus' corresponds to a value of 0.5."
+    },
+    "envelope_calculation": {
+        "inputs": {
+            "plot_area": 800,
+            "setback_area": 150
+        },
+        "formula": "allowable_envelope = plot_area - (setback_area * 2)",
+        "calculation": "500 = 800 - (150 * 2)",
+        "result": 500
+    },
+    "rl_optimal_action": 0
+}

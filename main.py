@@ -2,11 +2,16 @@ import json
 import os
 import numpy as np
 from dotenv import load_dotenv
+import glob
+import re # Import the regex library
+
+# --- Import our new logger ---
+from logging_config import logger
 
 # --- Import Our Custom Agents ---
 from agents.calculator_agent import EntitlementsAgent, AllowableEnvelopeAgent
 from agents.geometry_agent import GeometryAgent
-from rl_env.complex_env import ComplexEnv 
+from rl_env.complex_env import ComplexEnv
 
 # --- Import AI Libraries ---
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -17,102 +22,153 @@ from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from stable_baselines3 import PPO
 
-# --- 1. DEFINE INPUT ---
-print("--- Starting Full Pipeline ---")
-sample_case = {"plot_size": 800, "location": "suburban", "road_width": 10}
-print(f"Input Case: {json.dumps(sample_case, indent=4)}")
+# --- 1. INITIALIZE ALL AGENTS & LOAD ALL KNOWLEDGE BASES ---
+# (This part is wrapped in a function to avoid running on import)
+def initialize_system():
+    logger.info("Initializing all agents and loading knowledge bases...")
+    load_dotenv()
+    os.environ["GOOGLE_API_KEY"] = os.getenv("GEMINI_API_KEY")
 
-# --- 2. INITIALIZE ALL AGENTS ---
-print("\n--- Initializing All Agents ---")
+    embeddings = HuggingFaceEmbeddings(model_name="all-mpnet-base-v2")
+    llm = ChatGoogleGenerativeAI(model="gemini-pro-latest")
 
-# Setup for RAG Agent (Phase 3)
-load_dotenv()
-os.environ["GOOGLE_API_KEY"] = os.getenv("GEMINI_API_KEY")
-embeddings = HuggingFaceEmbeddings(model_name="all-mpnet-base-v2")
-vector_store = FAISS.load_local("rules_kb/faiss_index_mpnet", embeddings, allow_dangerous_deserialization=True)
-retriever = vector_store.as_retriever(search_kwargs={"k": 4})
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro-latest")
-prompt = PromptTemplate.from_template(
-    """You are an expert AI assistant who helps non-experts understand complex building regulations.
-    Your task is to analyze the user's question and the provided context to give a simple, clear answer.
+    vector_stores = {
+        "Mumbai": FAISS.load_local("rules_kb/faiss_index_mpnet", embeddings, allow_dangerous_deserialization=True),
+        "Pune": FAISS.load_local("rules_kb/faiss_index_pune", embeddings, allow_dangerous_deserialization=True)
+    }
+    logger.info(f"Loaded knowledge bases for cities: {list(vector_stores.keys())}")
 
-    Think step-by-step:
-    1.  Analyze the user's question.
-    2.  Carefully read the provided <context> to find the relevant rules.
-    3.  Synthesize the key information from the rules into a concise, easy-to-understand summary.
-    4.  List the specific point numbers, including any 'section' or 'clause' numbers, that you used.
-    5.  Add a simple explanation of what these numbers mean.
+    entitlement_rules = {"road_width_gt_18m_bonus": 0.5, "is_corner_plot_bonus": 0.2}
+    entitlement_agent = EntitlementsAgent(entitlement_rules)
+    envelope_agent = AllowableEnvelopeAgent()
+    rl_agent = PPO.load("rl_env/ppo_solvable_agent")
+    geometry_agent = GeometryAgent()
+    logger.info("All agents initialized successfully.")
+    
+    return vector_stores, llm, entitlement_agent, envelope_agent, rl_agent, geometry_agent
 
-    Your final answer MUST be in the following format:
-    **Summary:** [Provide your one or two-sentence summary here in plain English.]
-    **Source:** The summary above is based on the official rules found at the following points in the Development Control and Promotion Regulation-2034 document: [Provide a Python list of all relevant point, clause, and section numbers here.]
-
-    <context>
-    {context}
-    </context>
-
-    Question: {input}
+# --- 2. THE REUSABLE PIPELINE FUNCTION ---
+def process_case(case_filepath, vector_stores, llm, entitlement_agent, envelope_agent, rl_agent, geometry_agent):
     """
-)
-question_answer_chain = create_stuff_documents_chain(llm, prompt)
-rag_chain = create_retrieval_chain(retriever, question_answer_chain)
+    This function runs the entire multi-agent pipeline for a single case.
+    """
+    try:
+        with open(case_filepath, 'r') as f:
+            case_data = json.load(f)
+        
+        case_id = case_data.get("case_id", "unknown_case")
+        city = case_data.get("city", "Mumbai")
+        parameters = case_data.get("parameters", {})
+        
+        logger.info(f"PIPELINE_START for case: {case_id}", extra={'extra_data': {'case': case_data}})
 
-# Initialize Calculator Agents (Phase 4)
-entitlement_rules = {"road_width_gt_18m_bonus": 0.5, "is_corner_plot_bonus": 0.2}
-entitlement_agent = EntitlementsAgent(entitlement_rules)
-envelope_agent = AllowableEnvelopeAgent()
+        if city not in vector_stores:
+            logger.error(f"No vector store available for city: '{city}'. Aborting case.", extra={'extra_data': {'case_id': case_id}})
+            return None 
 
-# Load Trained RL Agent (Phase 5)
-rl_agent = PPO.load("rl_env/ppo_solvable_agent")
+        retriever = vector_stores[city].as_retriever(search_kwargs={"k": 5})
+        
+        prompt = PromptTemplate.from_template(
+             """You are a professional AI assistant specializing in the detailed analysis of municipal development regulations. Your task is to act as an expert consultant and provide a comprehensive, clear, and actionable report based on the provided context and the user's query.
 
-# Initialize Geometry Agent (Phase 7)
-geometry_agent = GeometryAgent()
+            **Think step-by-step:**
+            1.  First, fully understand all parameters of the user's query (Plot Size, Location, Road Width, etc.).
+            2.  Carefully and meticulously scan the provided <context> for all rules, sub-rules, tables, and clauses that are directly or indirectly applicable to the user's query.
+            3.  Organize your findings into logical categories (e.g., "Layout Open Space," "Floor Space Index," "Convenience Shopping").
+            4.  For each category, synthesize the rules into clear, bullet-pointed statements. If a rule involves a calculation (like FSI or LOS percentage), perform the calculation and show the result.
+            5.  Cite your sources by referencing the relevant part or section of the document mentioned in the context.
+            6.  Critically analyze if any key information is missing from the user's query that would be needed for a complete analysis and list these under a "Key Missing Information" section.
+            7.  Finally, suggest actionable "Next Steps" for the user.
 
-print("All agents are ready.")
+            **Your final output MUST be a well-structured Markdown report. DO NOT output a JSON object or a simple summary.** Use the following format precisely:
+            
+            Based on your query and the provided regulatory context, here is a detailed analysis report.
+
+            ### **Applicable Regulations**
+
+            #### **1. [Category Name 1]**
+            * [Bulleted summary of rule 1, including calculations if applicable.]
+            * [Bulleted summary of rule 2...]
+
+            *(Reference: [Source from context])*
+
+            #### **2. [Category Name 2]**
+            * [Bulleted summary of rule 1...]
+
+            *(Reference: [Source from context])*
+
+            *(... continue for all relevant categories ...)*
+
+            ***
+
+            ### **Key Missing Information**
+            * [List any missing parameters needed for a full analysis.]
+
+            ### **Next Steps**
+            * [List actionable next steps for the user.]
+
+            <context>
+            {context}
+            </context>
+
+            **Query:**
+            {input}
+            """
+        )
+        question_answer_chain = create_stuff_documents_chain(llm, prompt)
+        rag_chain = create_retrieval_chain(retriever, question_answer_chain)
+        rag_response = rag_chain.invoke({"input": f"Find rules for: {json.dumps(parameters)}"})
+        rag_answer = rag_response.get("answer", "No answer found.")
+        
+        entitlement_result = entitlement_agent.calculate("road_width_gt_18m_bonus")
+        envelope_result = envelope_agent.calculate(plot_area=parameters.get("plot_size", 0), setback_area=150)
+        
+        location_map = {"urban": 0, "suburban": 1, "rural": 2}
+        rl_state = np.array([parameters.get("plot_size",0), location_map.get(parameters.get("location"),0), parameters.get("road_width",0)]).astype(np.float32)
+        rl_action, _ = rl_agent.predict(rl_state, deterministic=True)
+        
+        final_report = { "input_case": case_data, "rag_analysis": rag_answer, "entitlement_calculation": entitlement_result, "envelope_calculation": envelope_result, "rl_optimal_action": int(rl_action) }
+        
+        output_dir = "outputs/case_studies"
+        os.makedirs(output_dir, exist_ok=True)
+        json_output_path = os.path.join(output_dir, f"{case_id}_report.json")
+        stl_output_path = os.path.join(output_dir, f"{case_id}_geometry.stl")
+
+        with open(json_output_path, "w") as f:
+            json.dump(final_report, f, indent=4)
+
+        plot_size = parameters.get("plot_size", 100)
+        side_length = np.sqrt(max(0, plot_size))
+        
+        fsi = 1.0
+        match = re.search(r"Total Permissible FSI:\*\* ([\d.]+)", rag_answer)
+        if match: fsi = float(match.group(1))
+
+        height = fsi * 10 
+        
+        geometry_agent.create_block(output_path=stl_output_path, width=side_length, depth=side_length, height=height)
+        
+        logger.info(f"PIPELINE_COMPLETE for case: {case_id}", extra={'extra_data': {'report_path': json_output_path, 'stl_path': stl_output_path}})
+        
+        return final_report # <-- THE CRUCIAL UPGRADE
+
+    except Exception as e:
+        logger.error(f"An error occurred while processing {case_filepath}: {e}", exc_info=True)
+        return None
 
 
-# --- 3. RUN THE PIPELINE ---
-print("\n--- Step 1: Running RAG Agent for Rule Classification ---")
-rag_response = rag_chain.invoke({"input": f"Find rules for: {json.dumps(sample_case)}"})
-rag_answer = rag_response.get("answer", "No answer found.")
-print("RAG analysis complete.")
-
-print("\n--- Step 2: Running Deterministic Calculator Agents ---")
-entitlement_result = entitlement_agent.calculate("road_width_gt_18m_bonus")
-envelope_result = envelope_agent.calculate(plot_area=sample_case["plot_size"], setback_area=150)
-print("Calculations complete.")
-
-print("\n--- Step 3: Running RL Agent for Optimal Action ---")
-location_map = {"urban": 0, "suburban": 1, "rural": 2}
-rl_state = np.array([sample_case["plot_size"], location_map[sample_case["location"]], sample_case["road_width"]]).astype(np.float32)
-rl_action, _ = rl_agent.predict(rl_state, deterministic=True)
-print(f"RL Agent chose optimal action: {rl_action}")
-
-
-# --- 4. GENERATE FINAL OUTPUTS ---
-print("\n--- Step 4: Generating Final Reports ---")
-final_report = {
-    "input_case": sample_case,
-    "rag_analysis": rag_answer,
-    "entitlement_calculation": entitlement_result,
-    "envelope_calculation": envelope_result,
-    "rl_optimal_action": int(rl_action)
-}
-
-# Save the JSON report
-json_output_path = "io/Pune_report.json"
-with open(json_output_path, "w") as f:
-    json.dump(final_report, f, indent=4)
-print(f"Final JSON report saved to {json_output_path}")
-
-# Call the Geometry Agent to create the 3D model
-envelope_size = envelope_result["result"]
-side_length = np.sqrt(envelope_size)
-geometry_agent.create_block(
-    output_path="io/Pune_geometry.stl",
-    width=side_length,
-    depth=side_length,
-    height=10
-)
-
-print("\n--- FULL PIPELINE COMPLETE ---")
+# --- 3. MAIN EXECUTION BLOCK (for command-line use) ---
+if __name__ == "__main__":
+    vector_stores, llm, entitlement_agent, envelope_agent, rl_agent, geometry_agent = initialize_system()
+    
+    print("--- Starting Full Pipeline Run for All Case Studies ---")
+    case_files = glob.glob("inputs/case_studies/*.json")
+    
+    if not case_files:
+        print("No case study files found in 'inputs/case_studies/'. Please create them first.")
+    else:
+        for case_file in case_files:
+            print(f"--- Processing case: {case_file} ---")
+            process_case(case_file, vector_stores, llm, entitlement_agent, envelope_agent, rl_agent, geometry_agent)
+            
+    print("\n--- All Case Studies Processed ---")

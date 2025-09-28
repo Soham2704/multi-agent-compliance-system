@@ -2,46 +2,100 @@ import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
 import random
+import json
+import os
 
 class ComplexEnv(gym.Env):
     def __init__(self):
         super().__init__()
         
-        # ACTION: The agent's choice is now simple again: 0 for Low, 1 for High
-        self.action_space = spaces.Discrete(2)
+        # --- 1. LOAD BOTH KNOWLEDGE SOURCES ---
         
-        # STATE: The agent still sees the full, complex state
+        # Source A: Synthetic "Textbook" Knowledge from our original oracle
+        synthetic_cases = []
+        if os.path.exists("rl_env/oracle_data.json"):
+            with open("rl_env/oracle_data.json") as f:
+                synthetic_data = json.load(f)
+                for item in synthetic_data:
+                    item['source'] = 'synthetic' # Tag to identify the source
+                    synthetic_cases.append(item)
+        
+        # Source B: Human-in-the-Loop "Real-World" Feedback
+        human_feedback_cases = []
+        feedback_file = "io/feedback.jsonl"
+        if os.path.exists(feedback_file):
+            with open(feedback_file, 'r') as f:
+                for line in f:
+                    try:
+                        feedback = json.loads(line)
+                        # Convert feedback into the same state/action format
+                        params = feedback['input']['parameters']
+                        location_map = {"urban": 0, "suburban": 1, "rural": 2}
+                        state = [params['plot_size'], location_map[params['location']], params['road_width']]
+                        
+                        # The action the agent took that the human voted on
+                        action_taken = feedback['output']['rl_optimal_action']
+                        
+                        human_feedback_cases.append({
+                            "state": state,
+                            "action_taken": action_taken,
+                            "feedback": feedback['user_feedback'], # 'up' or 'down'
+                            "source": 'human'
+                        })
+                    except (json.JSONDecodeError, KeyError):
+                        # Skip corrupted lines in the feedback file
+                        continue
+
+        # Combine both knowledge sources into the final training set
+        self.training_cases = synthetic_cases + human_feedback_cases
+        
+        if not self.training_cases:
+            raise ValueError("No training data found. Please create oracle_data.json or provide feedback.")
+
+        # --- 2. DEFINE SPACES ---
+        self.action_space = spaces.Discrete(5) # 5 possible rule choices from the original design
         low_obs = np.array([0, 0, 0])
         high_obs = np.array([10000, 2, 100])
         self.observation_space = spaces.Box(low=low_obs, high=high_obs, dtype=np.float32)
         
-        self.state = None
-        print("ComplexEnv (Solvable Version) initialized.")
+        self.current_case = None
+        print(f"ComplexEnv (HIRL) initialized with {len(self.training_cases)} total cases ({len(human_feedback_cases)} from human feedback).")
         
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
-        # The agent still sees a complex, random state
-        self.state = np.array([
-            np.random.uniform(500, 5000),
-            np.random.randint(0, 3),
-            np.random.uniform(5, 50)
-        ]).astype(np.float32)
+        # Pick a new random case from our combined training data
+        self.current_case = random.choice(self.training_cases)
         info = {}
-        return self.state, info
+        return np.array(self.current_case["state"]).astype(np.float32), info
 
     def step(self, action):
-        road_width = self.state[2] # The agent must learn to focus on this value
+        # --- 3. IMPLEMENT THE NEW REWARD LOGIC ---
+        source = self.current_case.get('source', 'synthetic')
         
-        # The reward is based only on the road_width
-        correct_action = 1 if road_width > 12 else 0
-
-        if action == correct_action:
-            reward = 1
-        else:
-            reward = -1
+        if source == 'human':
+            # This case came from a human. Use the stronger +/- 2 reward.
+            action_the_human_saw = self.current_case['action_taken']
+            human_vote = self.current_case['feedback']
             
+            # If the agent takes the same action that was UPVOTED
+            if action == action_the_human_saw and human_vote == 'up':
+                reward = 2  # Strong positive reward for agreeing with a good choice
+            # If the agent takes the same action that was DOWNVOTED
+            elif action == action_the_human_saw and human_vote == 'down':
+                reward = -2 # Strong negative reward for repeating a bad choice
+            # If the agent AVOIDS a downvoted action, that's good!
+            elif action != action_the_human_saw and human_vote == 'down':
+                reward = 1 # Small positive reward for avoiding a bad choice
+            else:
+                reward = 0 # Neutral reward for other scenarios
+        else:
+            # This is a synthetic case from the oracle. Use the original +/- 1 reward.
+            correct_action = self.current_case["correct_action"]
+            reward = 1 if action == correct_action else -1
+
         terminated = True
         truncated = False
         info = {}
         
-        return self.state, reward, terminated, truncated, info
+        current_state = np.array(self.current_case["state"]).astype(np.float32)
+        return current_state, reward, terminated, truncated, info

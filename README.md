@@ -1,142 +1,101 @@
-Multi-Agent System for Regulatory Compliance Analysis
-Project Overview
-This project is an end-to-end AI/ML pipeline that demonstrates a multi-agent system designed to automate the process of regulatory compliance analysis. The system fetches, parses, and analyzes complex regulatory documents, using a combination of Natural Language Processing, deterministic calculators, and a Reinforcement Learning agent to provide a comprehensive analysis of a given case.
+Multi-Agent AI System for Regulatory Compliance
+This repository contains the source code for a complete, end-to-end multi-agent AI pipeline designed to automate the analysis of complex, unstructured regulatory documents. The system ingests raw PDF rulebooks, processes them using an OCR and RAG pipeline, and uses a combination of deterministic and AI agents—including a human-in-the-loop Reinforcement Learning agent—to generate comprehensive analysis reports and 3D geometry outputs.
 
-This project was built to showcase a complete, production-style AI workflow—from raw data ingestion and cleaning to intelligent analysis, optimized decision-making, and final report generation.
+This project was developed as a demonstration of advanced AI engineering principles, including system orchestration, real-world data processing, and building intelligent, learning systems.
+
+Core Features
+End-to-End Orchestration: A central main.py orchestrator manages a full pipeline, from data ingestion to final report generation.
+
+Robust OCR Data Pipeline: Ingests raw, unstructured PDFs and uses Tesseract OCR to bypass font-encoding issues, producing a clean, structured JSON knowledge base.
+
+Multi-City RAG Agent: A sophisticated Retrieval-Augmented Generation agent, built with LangChain, uses local Hugging Face embeddings and multiple FAISS vector stores to provide expert-level analysis for different cities (Mumbai and Pune).
+
+Human-in-the-Loop Reinforcement Learning: A custom Gymnasium environment trains a Stable-Baselines3 PPO agent that learns an optimal policy from both a synthetically generated "oracle" and real human feedback collected via an interactive web UI.
+
+Full-Stack Interactive UI: A Streamlit front-end application communicates with a FastAPI back-end to provide an interactive user experience, display results, and collect feedback.
+
+Automated Testing & Logging: The system is validated with a pytest test suite and includes professional, structured JSONL logging for full observability.
 
 System Architecture
-The pipeline is orchestrated by a master script that calls a series of specialized agents in sequence. The output of one agent serves as the input for the next, creating a cohesive and automated workflow.
+The system is designed as a modular, multi-agent pipeline:
 
-Data Flow:
-Input Case (JSON) -> RAG Agent -> Calculator Agents -> RL Agent -> Final Report (JSON) -> Geometry Agent -> 3D Model (STL)
+[Input Case JSON] -> [Orchestrator (main.py)]
+                         |
+                         |--> [RAG Agent] -> (Uses FAISS Vector Store) -> [Analysis Report]
+                         |
+                         |--> [Calculator Agents] -> [Deterministic Calculations]
+                         |
+                         |--> [RL Agent (Human-Guided)] -> [Optimal Action]
+                         |
+                         '--> [Geometry Agent] -> [3D STL Model]
+                         |
+                         '--> [Logger] -> [Structured JSONL Logs]
 
-Key Technologies & Libraries
-Core ML/RL: Stable-Baselines3, Gymnasium, Numpy
+How to Run the Application
+This is a full-stack application with a front-end UI and a back-end API.
 
-LLM & RAG Framework: LangChain, Google Generative AI (for Gemini 1.5 Pro)
+Prerequisites:
 
-Vector Database & Embeddings: FAISS, Sentence-Transformers (Hugging Face)
+Python 3.11+
 
-Data Processing: PyMuPDF, Pytesseract (for OCR)
+All libraries from requirements.txt
 
-File Handling & Utilities: Requests, python-dotenv, numpy-stl
+Tesseract OCR engine installed and configured.
 
-🚀 Setup and Installation
-This guide will walk you through setting up the project to run on your local machine.
+1. Set up the Environment:
 
-1. Prerequisites
-Python 3.11
-
-Tesseract OCR Engine
-
-2. Clone the Repository
-git clone <your-repo-url>
-cd <your-repo-name>
-
-3. Set Up the Virtual Environment
-Using a virtual environment is essential for managing project dependencies.
-
-# Create the virtual environment
+# Create and activate a virtual environment
 python -m venv venv
-
-# Activate the environment (Windows)
 .\venv\Scripts\activate
 
-# Activate the environment (macOS/Linux)
-source venv/bin/activate
-
-4. Install Dependencies
-All required Python libraries are listed in requirements.txt. Install them with a single command:
-
+# Install all dependencies
 pip install -r requirements.txt
 
-5. Install Tesseract OCR
-This project uses Tesseract for Optical Character Recognition to handle difficult PDFs.
+2. Prepare the Data Assets:
+If this is your first time running the project, you need to download the source PDFs, parse them, create the knowledge bases, and train the RL agent. Note: The parsing and oracle creation steps are computationally intensive and may take a significant amount of time.
 
-Download and run the installer from the official Tesseract page.
+# Download the Mumbai and Pune PDFs
+python download_docs.py
 
-Crucially, during installation, ensure you select the option to "Add Tesseract to system PATH" or install it in a known location (e.g., C:\Tesseract-OCR). If you choose a custom location, you must update the path in agents/parse_agent.py.
+# Parse both documents (this will take time)
+python agents/parse_agent.py --input io/DCPR_2034.pdf --output rules_kb/mumbai_rules.json
+python agents/parse_agent.py --input io/Pune_DCR.pdf --output rules_kb/pune_rules.json
 
-6. Set Up Your API Key
-This project uses the Google Gemini API for the RAG agent.
+# Create the vector stores ("brains") for both cities
+python create_vector_store.py --input rules_kb/mumbai_rules.json --output rules_kb/faiss_index_mpnet
+python create_vector_store.py --input rules_kb/pune_rules.json --output rules_kb/faiss_index_pune
 
-Create a file named .env in the root project folder.
+# Create the synthetic oracle for RL training
+python rl_env/create_oracle.py
 
-Add your API key to this file in the following format:
-
-GEMINI_API_KEY="your_secret_api_key_here"
-
-This file is included in .gitignore and will not be tracked by version control.
-
-🏃‍♀️ How to Run the System
-The pipeline is designed to be run in steps.
-
-Step 1: One-Time Data Processing
-The first time you run the project, you must process the source PDF and create the searchable vector database. This step uses OCR and will take several minutes to complete.
-
-# This script creates parsed_rules.json and the FAISS vector store
-python agents/parse_agent.py
-
-You only need to run this script once.
-
-Step 2: Run the Full Pipeline on a Sample Case
-This is the main orchestrator script. It runs the entire multi-agent pipeline on a sample case and generates the final JSON report and STL geometry file.
-
-python main.py
-
-The final outputs for the two case studies (final_report_mumbai.json, final_report_pune.json, and their corresponding .stl files) will be saved in the io/ folder.
-
-Step 3: (Optional) Train the RL Agent
-To see how the Reinforcement Learning agent was trained, you can run the training script. This will train a new agent from scratch and run a series of tests to verify its performance.
-
+# Train the final, human-in-the-loop RL agent
 python rl_env/train_complex_agent.py
 
-The full training log, as required by the deliverables, can be found in rl_training_log.txt.
+3. Run the Interactive Application:
+You must run the back-end API and the front-end UI in two separate terminals.
 
-🤖 Agent Explanations
-This system is composed of several specialized agents, each with a specific role.
+Terminal 1: Start the Back-End API Server
 
-1. Parser Agent (parse_agent.py)
-Job: To process the raw, unstructured PDF document.
+uvicorn feedback_api:app --reload
 
-How it Works: It uses PyMuPDF to render each page as a high-resolution image. It then uses the Tesseract OCR engine to read the text from the image, overcoming the common problem of garbled or unreadable text in complex PDFs. The clean text and extracted metadata are saved to rules_kb/parsed_rules.json.
+Terminal 2: Start the Front-End UI
 
-2. Rule Classifier (RAG) Agent (main.py)
-Job: To provide a high-level, human-readable analysis of a case by finding the most relevant rules.
+streamlit run app.py
 
-How it Works: This is a Retrieval-Augmented Generation (RAG) system built with LangChain.
+Your web browser will open with the application running.
 
-Retrieval: It uses a local Hugging Face (all-mpnet-base-v2) model to create numerical embeddings of the parsed rules, which are stored in a FAISS vector store for fast similarity search.
+How to Run the Tests
+The project includes a pytest suite to validate the system.
 
-Augmentation & Generation: The retrieved rule chunks are added to a carefully engineered prompt and sent to the Google Gemini 1.5 Pro model, which generates a comprehensive, easy-to-understand summary.
+pytest
 
-3. Calculator Agents (calculator_agent.py)
-Job: To perform precise, deterministic calculations.
+Technology Stack
+AI & Machine Learning: PyTorch, LangChain, Stable-Baselines3, Gymnasium, Hugging Face Transformers, Scikit-learn
 
-How they Work:
+Data Processing: Pandas, NumPy, PyMuPDF, Pytesseract
 
-EntitlementsAgent: Maps rule IDs to specific numerical values from a dictionary.
+Web & API: Streamlit, FastAPI, Uvicorn
 
-AllowableEnvelopeAgent: Applies a fixed mathematical formula to given inputs.
+Vector Store: FAISS
 
-Both agents output a step-by-step breakdown of their work for full transparency.
-
-4. Reinforcement Learning Agent (complex_env.py, train_complex_agent.py)
-Job: To learn an optimal decision-making policy through trial and error.
-
-How it Works:
-
-Custom Environment: A custom environment was built using the Gymnasium library.
-
-State: The agent observes a 3-part state representing the input case: [plot_size, location, road_width].
-
-Action: The agent's task is to choose between two actions: 0 (Low Bonus) or 1 (High Bonus).
-
-Reward: The agent receives a reward of +1 if its action is correct based on a simple rule (e.g., if road_width > 12, action 1 is correct) and -1 otherwise.
-
-Training: The agent was trained using the PPO (Proximal Policy Optimization) algorithm from Stable-Baselines3 for 100,000 timesteps. The agent successfully learned to ignore irrelevant parts of the state and focus only on the road_width to achieve 100% accuracy on test cases.
-
-5. Geometry Agent (geometry_agent.py)
-Job: To convert a numerical result into a simple 3D model.
-
-How it Works: It uses the numpy-stl library to define the vertices and faces of a simple rectangular block. The dimensions of the block are determined by the output of the AllowableEnvelopeAgent. The final object is exported as an .stl file.
+Developer Tools: Git, GitHub, Pytest, Unittest

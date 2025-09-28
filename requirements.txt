@@ -17,3 +17,6 @@ gymnasium
 pytesseract
 pillow
 numpy-stl
+pytest 
+streamlit 
+fastapi "uvicorn[standard]"

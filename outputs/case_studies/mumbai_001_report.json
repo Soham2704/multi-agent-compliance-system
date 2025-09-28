@@ -1,0 +1,28 @@
+{
+    "input_case": {
+        "case_id": "mumbai_001",
+        "city": "Mumbai",
+        "document": "DCPR_2034.pdf",
+        "parameters": {
+            "plot_size": 2000,
+            "location": "urban",
+            "road_width": 20
+        }
+    },
+    "rag_analysis": "Based on your query and the provided regulatory context, here is a detailed analysis report.\n\n### **Applicable Regulations**\n\n#### **1. Floor Space Index (FSI)**\nBased on the plot's location in the \"Suburbs and Extended Suburbs\" and fronting a 20-meter wide road, the following FSI values are applicable:\n\n*   **Zonal (Basic) FSI:** 1.0\n*   **Additional FSI (on payment of premium):** 0.5\n*   **Admissible TDR (Transfer of Development Rights):** 0.9\n*   **Total Permissible FSI:** 2.4\n*   **Calculation of Total Permissible Built-Up Area (BUA):**\n    *   Total FSI (2.4) x Plot Size (2000 sq. m) = **4800 sq. m.**\n\n*(Reference: PART - V FLOOR SPACE INDEX, Table Sr. No H, iii, row for road width \"18.00m & above but less than 27m\")*\n\n#### **2. Layout Open Space (LOS)**\nFor a plot of 2000 sq. m, providing a recreational Layout Open Space is mandatory.\n\n*   **Required LOS Percentage:** 15% of the total plot area.\n*   **Calculation of Required LOS Area:**\n    *   15% of 2000 sq. m = **300 sq. m.**\n*   **LOS Conditions:**\n    *   The LOS must be provided in a single piece, as the plot area is less than 5000 sq. m.\n    *   The minimum area for any LOS must be 125 sq. m (the calculated 300 sq. m meets this requirement).\n    *   The minimum dimension (width or depth) of the LOS shall not be less than 7.5 m.\n    *   The LOS must have an independent means of access.\n    *   Ownership of the LOS must be vested in all property owners of the layout.\n*   **Tree Planting Requirement:**\n    *   Trees must be planted at a rate of 5 trees per 100 sq. m of the LOS area.\n    *   **Calculation:** (300 sq. m / 100 sq. m) x 5 = **15 trees**.\n*   **Permitted Structures in LOS:**\n    *   The regulations for constructing structures like reservoirs or pump houses (requiring LOS > 400 sq. m) or clubhouses and gyms (requiring LOS >= 1000 sq. m) are **not applicable**, as the required LOS area is 300 sq. m.\n\n*(Reference: PART - IV REQUIREMENT OF SITE AND LAYOUT PARAS)*\n\n#### **3. Convenience Shopping**\nThe regulations permit the development of convenience shopping centers or stores within the layout.\n\n*   **Permissible BUA:** Up to 5% of the Zonal (basic) FSI of the plot.\n*   **Calculation of Permissible BUA for Shopping:**\n    *   Zonal (basic) FSI Area = Basic FSI (1.0) x Plot Size (2000 sq. m) = 2000 sq. m.\n    *   5% of 2000 sq. m = **100 sq. m.**\n*   **Key Conditions:**\n    *   The shopping area can be consolidated in one place or distributed throughout the layout.\n    *   These stores shall not abut any road wider than 31 m (the 20 m road width complies with this).\n    *   Permitted uses include retail stores, personal service establishments, bakeries, and other specific uses as detailed in the regulations.\n\n*(Reference: PART - IV REQUIREMENT OF SITE AND LAYOUT PARAS)*\n\n***\n\n### **Key Missing Information**\nA complete analysis requires the following details which were not provided in your query:\n\n*   **Plot Dimensions (Width and Depth):** This is crucial to determine if the \"Narrow Plot\" regulations under Part VIII (Table No 19) are applicable, which could alter open space requirements.\n*   **Specific Land Use Zone:** The analysis assumes a \"Residential/Commercial\" zone as per the FSI table. If the plot is zoned for \"Industrial\" use, the FSI would be different.\n*   **Development Plan (DP) Reservations:** It is necessary to know if the plot is affected by any reservations, designations, or proposed road widening lines in the Development Plan, as this would impact the net developable plot area.\n*   **Existing On-Site Features:** Information on any existing structures, wells, drains, or trees is required for the preparation of submission plans.\n\n### **Next Steps**\nTo proceed with the development of this plot, we recommend the following actions:\n\n1.  **Confirm Official Zoning:** Verify the precise zoning (e.g., Residential R1/R2, Commercial C1/C2, Industrial) and location (Suburbs, Extended Suburbs) of the plot from the official Development Plan 2034 maps to confirm the FSI calculations.\n2.  **Conduct a Detailed Survey:** Commission a licensed surveyor to create a detailed survey plan of the plot, showing the exact dimensions (width and depth), contour levels, and any existing physical features as required for development permission.\n3.  **Check for Encumbrances:** Obtain a \"Property Card\" and review the Development Plan remarks to check for any reservations or road-widening proposals that may affect the net plot area.\n4.  **Engage an Architect:** Hire a licensed architect to prepare a comprehensive proposal, including the layout plan and building plans, in accordance with the regulations outlined in PART II (Sub-division/Lay-out Plan) for submission to the Municipal Corporation of Greater Mumbai (MCGM).",
+    "entitlement_calculation": {
+        "input_rule": "road_width_gt_18m_bonus",
+        "rule_value": 0.5,
+        "explanation": "The rule 'road_width_gt_18m_bonus' corresponds to a value of 0.5."
+    },
+    "envelope_calculation": {
+        "inputs": {
+            "plot_area": 2000,
+            "setback_area": 150
+        },
+        "formula": "allowable_envelope = plot_area - (setback_area * 2)",
+        "calculation": "1700 = 2000 - (150 * 2)",
+        "result": 1700
+    },
+    "rl_optimal_action": 1
+}

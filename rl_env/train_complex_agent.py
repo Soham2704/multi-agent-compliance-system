@@ -1,33 +1,61 @@
-from complex_env import ComplexEnv
-from stable_baselines3 import PPO
+import json
 import numpy as np
-import random
+import os
+from stable_baselines3 import PPO
 
-# (The create and train parts are the same)
+# --- Import our Human-in-the-Loop environment ---
+from complex_env import ComplexEnv
+
+# 1. Create the environment
 env = ComplexEnv()
-agent = PPO("MlpPolicy", env, verbose=1) # Set verbose to 0 to hide training log
-print("\n--- Starting Training on Solvable Env (100k steps) ---")
+
+# 2. --- UPGRADE: Define a more powerful agent architecture ---
+# We'll give the agent a bigger "brain" with two hidden layers of 128 neurons each.
+policy_kwargs = dict(net_arch=dict(pi=[128, 128], vf=[128, 128]))
+
+# We create the agent with the new brain and encourage it to be more "curious"
+# The `ent_coef` parameter rewards the agent for exploring different actions.
+agent = PPO(
+    "MlpPolicy", 
+    env, 
+    policy_kwargs=policy_kwargs, 
+    ent_coef=0.01, # Entropy coefficient to encourage exploration
+    verbose=0
+) 
+
+# 3. Train the new, smarter agent
+print("\n--- Starting HIRL Training with Advanced Agent (100k steps)... ---")
 agent.learn(total_timesteps=100000)
-print("--- Training Complete ---")
+print("--- Training Complete. ---")
 
-# --- NEW, MORE THOROUGH TESTING LOOP ---
-print("\n--- Testing Trained Agent on 20 Random Cases ---")
+# 4. Save the final, human-guided model
+output_path = "rl_env/ppo_hirl_agent.zip"
+agent.save(output_path)
+print(f"Human-in-the-Loop trained agent saved to {output_path}")
 
-for i in range(20):
-    # Get a random starting state from the environment
-    obs, _ = env.reset()
-    road_width = obs[2] # The road_width is the third item
+# 5. Test the newly trained agent on the original "textbook" cases
+print("\n--- Testing Trained Agent on Original Oracle Cases ---")
+oracle_file = "rl_env/oracle_data.json"
+if os.path.exists(oracle_file):
+    with open(oracle_file, 'r') as f:
+        oracle_cases = json.load(f)
     
-    # Determine the actual correct answer
-    correct_action = 1 if road_width > 12 else 0
+    correct_count = 0
+    test_cases = oracle_cases[:10] # Test on the first 10 cases
+
+    for case in test_cases:
+        obs = np.array(case["state"]).astype(np.float32)
+        action, _ = agent.predict(obs, deterministic=True)
+        correct_action = case["correct_action"]
+        
+        if action == correct_action:
+            correct_count += 1
+        
+        print(f"  - For state={case['state']}, Agent chose: {action}, Correct was: {correct_action}")
     
-    # Get the agent's prediction
-    action, _ = agent.predict(obs, deterministic=True)
-    
-    # Check if the agent was right
-    is_correct = "CORRECT" if action == correct_action else "WRONG"
-    
-    print(f"Case {i+1}: road_width={road_width:.2f}, Agent chose: {action}, Correct was: {correct_action} -> {is_correct}")
-    # ... (at the very end of train_complex_agent.py)
-agent.save("rl_env/ppo_solvable_agent")
-print("Agent saved to file.")
+    if test_cases:
+        accuracy = (correct_count / len(test_cases)) * 100
+        print(f"\n>>> Agent Accuracy on Oracle Cases: {accuracy:.1f}% <<<")
+else:
+    print("Could not find oracle_data.json to run final tests.")
+

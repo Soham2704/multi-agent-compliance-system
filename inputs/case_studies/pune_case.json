@@ -1,0 +1,10 @@
+{
+    "case_id": "pune_001",
+    "city": "Pune",
+    "document": "Pune_DCR.pdf",
+    "parameters": {
+        "plot_size": 800,
+        "location": "suburban",
+        "road_width": 10
+    }
+}

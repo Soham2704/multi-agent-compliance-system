@@ -1,0 +1,10 @@
+{
+    "case_id": "mumbai_001",
+    "city": "Mumbai",
+    "document": "DCPR_2034.pdf",
+    "parameters": {
+        "plot_size": 2000,
+        "location": "urban",
+        "road_width": 20
+    }
+}
