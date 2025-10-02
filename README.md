@@ -3,9 +3,6 @@ This repository contains the source code for a professional-grade, multi-agent A
 
 This project was developed as a demonstration of advanced AI engineering principles, including system architecture, real-world data processing, building intelligent learning systems, and professional-grade testing, documentation, and automation.
 
-(This is where you will add a screenshot of your beautiful Streamlit UI in action!)
-![Compliance System UI](path/to/your/screenshot.png)
-
 Core Features
 End-to-End API Service: The entire system is packaged as a professional FastAPI service with documented endpoints for running cases, submitting feedback, and retrieving logs.
 
@@ -21,7 +18,7 @@ Professional-Grade Engineering: The project includes a full pytest test suite, c
 
 System Architecture
 The system is designed as a modular, service-oriented architecture:
-
+'''
 +----------------+      +---------------------+      +-----------------+
 |   Frontend     |----->|   FastAPI Service   |----->|   SQLite DB     |
 | (Streamlit UI) |      |      (main.py)      |      |   (rules.db)    |
@@ -40,7 +37,7 @@ The system is designed as a modular, service-oriented architecture:
 | Database Query Agent  | | Calculator    |     |    RL Agent     |
 +-----------------------+ | Agents        |     +---------------+
                           +---------------+
-
+'''
 How to Run the Application
 This is a full-stack application with a back-end API server and a front-end UI.
 
