@@ -9,7 +9,55 @@
             "road_width": 20
         }
     },
-    "rag_analysis": "Based on your query and the provided regulatory context, here is a detailed analysis report.\n\n### **Applicable Regulations**\n\n#### **1. Floor Space Index (FSI)**\nBased on the plot's location in the \"Suburbs and Extended Suburbs\" and fronting a 20-meter wide road, the following FSI values are applicable:\n\n*   **Zonal (Basic) FSI:** 1.0\n*   **Additional FSI (on payment of premium):** 0.5\n*   **Admissible TDR (Transfer of Development Rights):** 0.9\n*   **Total Permissible FSI:** 2.4\n*   **Calculation of Total Permissible Built-Up Area (BUA):**\n    *   Total FSI (2.4) x Plot Size (2000 sq. m) = **4800 sq. m.**\n\n*(Reference: PART - V FLOOR SPACE INDEX, Table Sr. No H, iii, row for road width \"18.00m & above but less than 27m\")*\n\n#### **2. Layout Open Space (LOS)**\nFor a plot of 2000 sq. m, providing a recreational Layout Open Space is mandatory.\n\n*   **Required LOS Percentage:** 15% of the total plot area.\n*   **Calculation of Required LOS Area:**\n    *   15% of 2000 sq. m = **300 sq. m.**\n*   **LOS Conditions:**\n    *   The LOS must be provided in a single piece, as the plot area is less than 5000 sq. m.\n    *   The minimum area for any LOS must be 125 sq. m (the calculated 300 sq. m meets this requirement).\n    *   The minimum dimension (width or depth) of the LOS shall not be less than 7.5 m.\n    *   The LOS must have an independent means of access.\n    *   Ownership of the LOS must be vested in all property owners of the layout.\n*   **Tree Planting Requirement:**\n    *   Trees must be planted at a rate of 5 trees per 100 sq. m of the LOS area.\n    *   **Calculation:** (300 sq. m / 100 sq. m) x 5 = **15 trees**.\n*   **Permitted Structures in LOS:**\n    *   The regulations for constructing structures like reservoirs or pump houses (requiring LOS > 400 sq. m) or clubhouses and gyms (requiring LOS >= 1000 sq. m) are **not applicable**, as the required LOS area is 300 sq. m.\n\n*(Reference: PART - IV REQUIREMENT OF SITE AND LAYOUT PARAS)*\n\n#### **3. Convenience Shopping**\nThe regulations permit the development of convenience shopping centers or stores within the layout.\n\n*   **Permissible BUA:** Up to 5% of the Zonal (basic) FSI of the plot.\n*   **Calculation of Permissible BUA for Shopping:**\n    *   Zonal (basic) FSI Area = Basic FSI (1.0) x Plot Size (2000 sq. m) = 2000 sq. m.\n    *   5% of 2000 sq. m = **100 sq. m.**\n*   **Key Conditions:**\n    *   The shopping area can be consolidated in one place or distributed throughout the layout.\n    *   These stores shall not abut any road wider than 31 m (the 20 m road width complies with this).\n    *   Permitted uses include retail stores, personal service establishments, bakeries, and other specific uses as detailed in the regulations.\n\n*(Reference: PART - IV REQUIREMENT OF SITE AND LAYOUT PARAS)*\n\n***\n\n### **Key Missing Information**\nA complete analysis requires the following details which were not provided in your query:\n\n*   **Plot Dimensions (Width and Depth):** This is crucial to determine if the \"Narrow Plot\" regulations under Part VIII (Table No 19) are applicable, which could alter open space requirements.\n*   **Specific Land Use Zone:** The analysis assumes a \"Residential/Commercial\" zone as per the FSI table. If the plot is zoned for \"Industrial\" use, the FSI would be different.\n*   **Development Plan (DP) Reservations:** It is necessary to know if the plot is affected by any reservations, designations, or proposed road widening lines in the Development Plan, as this would impact the net developable plot area.\n*   **Existing On-Site Features:** Information on any existing structures, wells, drains, or trees is required for the preparation of submission plans.\n\n### **Next Steps**\nTo proceed with the development of this plot, we recommend the following actions:\n\n1.  **Confirm Official Zoning:** Verify the precise zoning (e.g., Residential R1/R2, Commercial C1/C2, Industrial) and location (Suburbs, Extended Suburbs) of the plot from the official Development Plan 2034 maps to confirm the FSI calculations.\n2.  **Conduct a Detailed Survey:** Commission a licensed surveyor to create a detailed survey plan of the plot, showing the exact dimensions (width and depth), contour levels, and any existing physical features as required for development permission.\n3.  **Check for Encumbrances:** Obtain a \"Property Card\" and review the Development Plan remarks to check for any reservations or road-widening proposals that may affect the net plot area.\n4.  **Engage an Architect:** Hire a licensed architect to prepare a comprehensive proposal, including the layout plan and building plans, in accordance with the regulations outlined in PART II (Sub-division/Lay-out Plan) for submission to the Municipal Corporation of Greater Mumbai (MCGM).",
+    "analysis_report": "### **AI Consultant Report: Planning & Zoning Analysis**\n\n**Date:** October 02, 2025\n**Subject:** Analysis of Development Potential\n**Case Parameters:**\n* **Plot Size:** 2000\n* **Location Type:** urban\n* **Abutting Road Width:** 20\n\n---\n\n#### **1. Analysis Summary & Applicable Rules**\n\nBased on the verified facts from the database, the subject plot has significant development potential, governed by specific regulations regarding density, open space, and ancillary structures.\n\nThe applicable rules indicate a maximum potential Floor Space Index (FSI) of up to **4.0**, allowing for a substantial built-up area relative to the plot size. The database presents multiple FSI values (2.4, 2.7, and 4.0), suggesting that the final permissible FSI may depend on factors such as the utilization of premium FSI or Transfer of Development Rights (TDR).\n\nKey requirements identified include a mandatory reservation of **15%** of the plot area for Landscaped Open Space (LOS), which must adhere to minimum dimensional criteria. Additionally, specific front marginal open space (setback) of **3.0 to 4.5 meters** is mandated. The rules also provide for ancillary structures like electrical substations, though conflicting maximum area values were found (40 sqm and 66 sqm), which requires clarification.\n\n#### **2. Entitlements & Calculations**\n\nBased on the provided parameters, the following development entitlements are calculated:\n\n*   **Floor Space Index (FSI) & Permissible Built-Up Area:**\n    The database indicates a maximum potential `total_fsi` of 4.0. This allows for the highest development density.\n    *   **Formula:** Total Built-Up Area = Plot Size \u00d7 Total FSI\n    *   **Calculation:** 2000 sqm \u00d7 4.0 = **8,000 sqm**\n    *   *Note:* Other FSI compositions were found (e.g., Base FSI 1.0 + Premium FSI 0.5 + TDR FSI 0.9 = Total FSI 2.4). The final achievable FSI may depend on the specific scheme chosen and fees paid to the local authority. The 8,000 sqm represents the maximum theoretical potential identified.\n\n*   **Landscaped Open Space (LOS):**\n    A mandatory reservation of 15% of the plot area is required for landscaped open space.\n    *   **Formula:** Required LOS Area = Plot Size \u00d7 LOS Percentage\n    *   **Calculation:** 2000 sqm \u00d7 0.15 = **300 sqm**\n    *   **Additional Constraints:** This LOS area must be provided in a contiguous parcel with a minimum area of 125 sqm and a minimum dimension of 7.5 meters on any side. The calculated 300 sqm exceeds the minimum area requirement.\n\n*   **Front Marginal Open Space (Setback):**\n    The rules dictate a specific range for the front setback.\n    *   **Minimum Requirement:** 3.0 meters\n    *   **Maximum Requirement:** 4.5 meters\n    *   This means the building must be set back from the front plot line by a distance between 3.0 and 4.5 meters.\n\n*   **Ancillary Structures (Electrical Substation):**\n    The database contains conflicting information regarding the maximum permissible area for an electrical substation.\n    *   **Value 1:** 40 sqm\n    *   **Value 2:** 66 sqm\n    *   This discrepancy must be clarified with the governing authority to determine the correct allowance.\n\n#### **3. Key Missing Information**\n\nTo provide a definitive and legally compliant analysis, the following critical information is required:\n\n1.  **Specific Jurisdiction:** The name of the city, municipality, or governing authority is essential. \"Urban\" is a general classification; all regulations are jurisdiction-specific.\n2.  **Zoning Designation:** The precise zoning classification of the plot (e.g., R-3 Residential, C-1 Commercial, MXD Mixed-Use) is the most critical factor, as it dictates the primary land use, density, height, and other specific parameters. The rules provided are likely tied to a specific, unknown zone.\n3.  **Proposed Use:** The intended use of the proposed development (e.g., residential apartments, office building, retail center, hospital) will determine which specific sections of the building code and zoning ordinance apply, including parking requirements, fire safety norms, and accessibility standards.\n4.  **Plot-Specific Constraints:** Information on any easements, right-of-ways, environmental protection overlays, heritage designations, or topographical limitations (e.g., steep slopes, water bodies) that may encumber the plot and restrict development.\n\n#### **4. Recommended Next Steps**\n\n1.  **Refine Your Query:** To receive a more accurate automated analysis, provide the key missing information listed in Section 3, particularly the specific city and zoning designation.\n2.  **Consult Local Authorities:** Immediately contact the relevant municipal Planning Department, Zoning Office, or Building Department. They are the sole source of legally binding regulations and can provide the official zoning map and development control regulations applicable to your specific plot.\n3.  **Engage a Professional:** It is highly recommended to hire a local, licensed architect, certified planner, or land-use attorney. A professional can conduct a thorough due diligence, interpret the full scope of local regulations, advise on the optimal development strategy, and prepare the necessary documents for permit applications.\n4.  **Obtain Official Documents:** Procure a certified copy of the plot's survey plan (showing dimensions, topography, and any encumbrances) and the official title deed to verify ownership and legal status.\n\n---\n\n**Disclaimer:** This report is an automated analysis based on the limited data provided and the rules found in our database. It is for informational purposes only and does not constitute legal, architectural, or planning advice. All information should be independently verified with the relevant governing authorities.\n\n---",
+    "deterministic_rules_found": [
+        {
+            "base_fsi": 1.33,
+            "total_fsi": 2.7
+        },
+        {
+            "base_fsi": 1.0,
+            "additional_fsi_premium": 0.5,
+            "tdr_fsi": 0.9,
+            "total_fsi": 2.4
+        },
+        {
+            "total_fsi": {
+                "max": 4.0
+            }
+        },
+        {
+            "max_required_front_open_space_m": 4.5
+        },
+        {
+            "front_marginal_open_space_m": {
+                "min": 3.0
+            }
+        },
+        {
+            "total_fsi": 4.0
+        },
+        {
+            "base_fsi": 1.0,
+            "premium_fsi": 0.5,
+            "tdr_fsi": 0.9,
+            "total_fsi": 2.4
+        },
+        {
+            "los_percentage": 15
+        },
+        {
+            "max_substation_area_sqm": 40
+        },
+        {
+            "max_substation_area_sqm": 66
+        },
+        {
+            "los_percentage": 15,
+            "min_area_sqm": 125,
+            "min_dimension_m": 7.5
+        }
+    ],
     "entitlement_calculation": {
         "input_rule": "road_width_gt_18m_bonus",
         "rule_value": 0.5,
@@ -24,5 +72,5 @@
         "calculation": "1700 = 2000 - (150 * 2)",
         "result": 1700
     },
-    "rl_optimal_action": 1
+    "rl_optimal_action": 4
 }

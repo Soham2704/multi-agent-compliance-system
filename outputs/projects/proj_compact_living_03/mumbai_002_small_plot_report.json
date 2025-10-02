@@ -1,0 +1,36 @@
+{
+    "project_id": "proj_compact_living_03",
+    "case_id": "mumbai_002_small_plot",
+    "city": "Mumbai",
+    "inputs": {
+        "plot_size": 400,
+        "location": "suburban",
+        "road_width": 9
+    },
+    "entitlements": {
+        "analysis_summary": "### **AI Consultant Report: Planning & Zoning Analysis**\n**Date:** October 02, 2025\n**Subject:** Analysis of Development Potential\n**Case Parameters:**\n*   **Plot Size:** 400\n*   **Location Type:** suburban\n*   **Abutting Road Width:** 9\n---\n#### **1. Analysis Summary & Applicable Rules**\nBased on the provided regulations, the 400 sq. unit plot is designated for a single specific use: \"ConvenienceShopping\". No area is allocated for an electrical substation on the plot.\n\nThe primary development control is the Floor Space Index (FSI), which dictates the total permissible built-up area. The regulations stipulate a **Base FSI of 1.0**. This can be augmented through two optional mechanisms:\n*   **Premium FSI:** An additional 0.5 FSI.\n*   **TDR FSI:** An additional 0.9 FSI (Transferable Development Rights).\n\nBy combining all available FSI components, a **Total Maximum FSI of 2.4** can be achieved. The provided rules do not appear to be conditional on the location type (\"suburban\") or the abutting road width (9 units), though these factors are typically significant in comprehensive development codes.\n\n#### **2. Entitlements & Calculations**\nThe total permissible built-up area (BUA) is calculated by multiplying the Plot Size by the applicable FSI.\n\n**Formula:** Permissible BUA = Plot Size \u00d7 FSI\n\n*   **Plot Size:** 400 sq. units\n\n**A. Base Entitlement:**\n*   Calculation: 400 (Plot Size) \u00d7 1.0 (Base FSI)\n*   **Permissible BUA (Base): 400 sq. units**\n\n**B. Potential Entitlement with Premium FSI:**\n*   This assumes the purchase or utilization of the optional Premium FSI in addition to the Base FSI.\n*   Calculation: 400 (Plot Size) \u00d7 (1.0 Base FSI + 0.5 Premium FSI)\n*   **Permissible BUA (with Premium): 600 sq. units**\n\n**C. Maximum Potential Entitlement (Total FSI):**\n*   This assumes the successful utilization of Base, Premium, and TDR FSI.\n*   Calculation: 400 (Plot Size) \u00d7 2.4 (Total FSI)\n*   **Permissible BUA (Maximum): 960 sq. units**\n\n**D. Other Calculations:**\n*   **Maximum Substation Area:** 0 sqm. No on-site substation is permitted.\n\n#### **3. Key Missing Information**\nA definitive analysis is not possible without the following critical information, which was not present in the provided context:\n\n*   **Zoning District Designation:** The specific zoning classification for the plot (e.g., C-1, NC, etc.) is unknown. This is essential for verifying all applicable regulations.\n*   **Setback Requirements:** Minimum required open spaces from the plot boundaries (front, rear, and side setbacks) are not specified. These are fundamental for determining the actual buildable footprint on the ground.\n*   **Maximum Building Height:** There is no mention of the maximum permissible building height, either in meters or in the number of floors.\n*   **Maximum Ground Coverage:** The percentage of the plot that can be covered by the building's footprint is not defined.\n*   **Parking Requirements:** Regulations for minimum required parking spaces, which are typically based on the use (\"ConvenienceShopping\") and total floor area, are missing.\n*   **Unit Specification:** The units for \"Plot Size\" (assumed sq. meters) and \"Abutting Road Width\" (assumed meters) need confirmation.\n*   **Premium/TDR FSI Conditions:** The rules do not specify the conditions, costs, or procedures for acquiring and utilizing the Premium and TDR FSI.\n\n#### **4. Recommended Next Steps**\nTo proceed with a viable development plan, the following actions are recommended:\n\n1.  **Obtain Official Zoning Information:** Contact the local municipal planning authority to get the official zoning certificate or planning map for the property. This will confirm the zoning district and provide the full text of applicable regulations.\n2.  **Identify Missing Parameters:** Specifically request the official regulations concerning setbacks, maximum height, ground coverage, and parking for the identified zoning district.\n3.  **Clarify FSI Procurement:** Inquire with the planning authority about the eligibility, application process, and associated fees for purchasing Premium FSI and/or utilizing Transferable Development Rights (TDR) for this specific plot.\n4.  **Commission a Feasibility Study:** Engage a local architect or planner to create a preliminary site plan. This study should integrate the calculated BUA potential with the setback, height, and parking rules to determine a realistic development envelope and design.\n5.  **Schedule a Pre-Application Meeting:** Once a preliminary concept is ready, meet with the municipal planning department to present the proposal, confirm your interpretation of the rules, and identify any potential issues early in the process.\n\n---\n**Disclaimer:** This report is an automated analysis based solely on the structured data provided in the `<context>`. It is not a substitute for professional legal or architectural advice, nor does it represent a formal opinion from any municipal authority. All information, especially missing parameters, must be verified with the relevant governing body before making any financial or design commitments.",
+        "rules_from_db": [
+            {
+                "permitted_use": [
+                    "ConvenienceShopping"
+                ]
+            },
+            {
+                "max_substation_area_sqm": 0
+            },
+            {
+                "base_fsi": 1.0,
+                "premium_fsi": 0.5,
+                "tdr_fsi": 0.9,
+                "total_fsi": 2.4
+            }
+        ],
+        "carpet_area_sqm": 672.0
+    },
+    "rl_decision": {
+        "optimal_action": 1,
+        "confidence_score": 1.0
+    },
+    "geometry_file": "/outputs/projects/proj_compact_living_03/mumbai_002_small_plot_geometry.stl",
+    "logs": "/logs/mumbai_002_small_plot"
+}

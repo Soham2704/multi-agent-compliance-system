@@ -1,38 +1,48 @@
 Multi-Agent AI System for Regulatory Compliance
-This repository contains the source code for a complete, end-to-end multi-agent AI pipeline designed to automate the analysis of complex, unstructured regulatory documents. The system ingests raw PDF rulebooks, processes them using an OCR and RAG pipeline, and uses a combination of deterministic and AI agents—including a human-in-the-loop Reinforcement Learning agent—to generate comprehensive analysis reports and 3D geometry outputs.
+This repository contains the source code for a professional-grade, multi-agent AI pipeline designed to automate the analysis of complex, unstructured regulatory documents. The system has been architected as a deployable API service that ingests raw PDF rulebooks, processes them through a robust data pipeline, and uses a combination of deterministic and AI agents—including a human-in-the-loop Reinforcement Learning agent—to generate comprehensive analysis reports and 3D geometry outputs.
 
-This project was developed as a demonstration of advanced AI engineering principles, including system orchestration, real-world data processing, and building intelligent, learning systems.
+This project was developed as a demonstration of advanced AI engineering principles, including system architecture, real-world data processing, building intelligent learning systems, and professional-grade testing, documentation, and automation.
+
+(This is where you will add a screenshot of your beautiful Streamlit UI in action!)
+![Compliance System UI](path/to/your/screenshot.png)
 
 Core Features
-End-to-End Orchestration: A central main.py orchestrator manages a full pipeline, from data ingestion to final report generation.
+End-to-End API Service: The entire system is packaged as a professional FastAPI service with documented endpoints for running cases, submitting feedback, and retrieving logs.
 
-Robust OCR Data Pipeline: Ingests raw, unstructured PDFs and uses Tesseract OCR to bypass font-encoding issues, producing a clean, structured JSON knowledge base.
+Automated Data Curation Pipeline: A high-performance, parallelized AI agent (extract_rules_ai.py) reads unstructured text from OCR'd PDFs and uses an LLM to automatically populate a structured SQLite database.
 
-Multi-City RAG Agent: A sophisticated Retrieval-Augmented Generation agent, built with LangChain, uses local Hugging Face embeddings and multiple FAISS vector stores to provide expert-level analysis for different cities (Mumbai and Pune).
+Database-Driven "Fact-Checker" Architecture: The core analysis is now driven by a precise Database Query Agent that retrieves deterministic facts, which are then explained in a rich, human-readable context by a Gemini Pro LLM agent. This hybrid approach ensures both accuracy and quality.
 
-Human-in-the-Loop Reinforcement Learning: A custom Gymnasium environment trains a Stable-Baselines3 PPO agent that learns an optimal policy from both a synthetically generated "oracle" and real human feedback collected via an interactive web UI.
+Human-in-the-Loop Reinforcement Learning (HIRL): A custom Gymnasium environment trains a Stable-Baselines3 PPO agent that learns an optimal policy from both a synthetically generated "oracle" and real human feedback collected via an interactive web UI.
 
-Full-Stack Interactive UI: A Streamlit front-end application communicates with a FastAPI back-end to provide an interactive user experience, display results, and collect feedback.
+Full-Stack Interactive UI: A Streamlit front-end application communicates with the FastAPI back-end to provide an interactive user experience, display results, and collect user feedback (👍/👎).
 
-Automated Testing & Logging: The system is validated with a pytest test suite and includes professional, structured JSONL logging for full observability.
+Professional-Grade Engineering: The project includes a full pytest test suite, comprehensive structured JSONL logging, a Dockerfile for easy deployment, and a complete set of professional documentation.
 
 System Architecture
-The system is designed as a modular, multi-agent pipeline:
+The system is designed as a modular, service-oriented architecture:
 
-[Input Case JSON] -> [Orchestrator (main.py)]
-                         |
-                         |--> [RAG Agent] -> (Uses FAISS Vector Store) -> [Analysis Report]
-                         |
-                         |--> [Calculator Agents] -> [Deterministic Calculations]
-                         |
-                         |--> [RL Agent (Human-Guided)] -> [Optimal Action]
-                         |
-                         '--> [Geometry Agent] -> [3D STL Model]
-                         |
-                         '--> [Logger] -> [Structured JSONL Logs]
++----------------+      +---------------------+      +-----------------+
+|   Frontend     |----->|   FastAPI Service   |----->|   SQLite DB     |
+| (Streamlit UI) |      |      (main.py)      |      |   (rules.db)    |
++----------------+      +---------+-----------+      +-----------------+
+                                  |
+            +---------------------+---------------------+
+            |                                           |
++-----------v-----------+                     +---------v---------+
+|    AI Data Pipeline   |                     |  Compliance Pipeline|
+| (OCR -> AI Extraction)|                     |  (process_case_logic)|
++-----------------------+                     +-----------+-------+
+                                                          |
+            +---------------------+---------------------+
+            |                     |                     |
++-----------v-----------+ +-------v-------+     +-------v-------+
+| Database Query Agent  | | Calculator    |     |    RL Agent     |
++-----------------------+ | Agents        |     +---------------+
+                          +---------------+
 
 How to Run the Application
-This is a full-stack application with a front-end UI and a back-end API.
+This is a full-stack application with a back-end API server and a front-end UI.
 
 Prerequisites:
 
@@ -41,6 +51,8 @@ Python 3.11+
 All libraries from requirements.txt
 
 Tesseract OCR engine installed and configured.
+
+Node.js and N8N installed globally for automation workflows.
 
 1. Set up the Environment:
 
@@ -51,24 +63,24 @@ python -m venv venv
 # Install all dependencies
 pip install -r requirements.txt
 
-2. Prepare the Data Assets:
-If this is your first time running the project, you need to download the source PDFs, parse them, create the knowledge bases, and train the RL agent. Note: The parsing and oracle creation steps are computationally intensive and may take a significant amount of time.
+2. Prepare the Data Assets (The Full Data Pipeline):
+This is a one-time setup process to build the database. Note: The parsing and AI extraction steps are computationally intensive and may take a significant amount of time.
 
-# Download the Mumbai and Pune PDFs
+# Step A: Download the source PDFs
 python download_docs.py
 
-# Parse both documents (this will take time)
+# Step B: Parse both documents with OCR (This will take time)
 python agents/parse_agent.py --input io/DCPR_2034.pdf --output rules_kb/mumbai_rules.json
 python agents/parse_agent.py --input io/Pune_DCR.pdf --output rules_kb/pune_rules.json
 
-# Create the vector stores ("brains") for both cities
-python create_vector_store.py --input rules_kb/mumbai_rules.json --output rules_kb/faiss_index_mpnet
-python create_vector_store.py --input rules_kb/pune_rules.json --output rules_kb/faiss_index_pune
+# Step C: Create the empty database
+python database_setup.py
 
-# Create the synthetic oracle for RL training
-python rl_env/create_oracle.py
+# Step D: Use AI to automatically populate the database (This will take a long time)
+python extract_rules_ai.py --input rules_kb/mumbai_rules.json --city Mumbai
+python extract_rules_ai.py --input rules_kb/pune_rules.json --city Pune
 
-# Train the final, human-in-the-loop RL agent
+# Step E: Train the final, human-in-the-loop RL agent
 python rl_env/train_complex_agent.py
 
 3. Run the Interactive Application:
@@ -76,7 +88,7 @@ You must run the back-end API and the front-end UI in two separate terminals.
 
 Terminal 1: Start the Back-End API Server
 
-uvicorn feedback_api:app --reload
+uvicorn main:app --reload
 
 Terminal 2: Start the Front-End UI
 
@@ -89,13 +101,17 @@ The project includes a pytest suite to validate the system.
 
 pytest
 
+
+
 Technology Stack
 AI & Machine Learning: PyTorch, LangChain, Stable-Baselines3, Gymnasium, Hugging Face Transformers, Scikit-learn
 
-Data Processing: Pandas, NumPy, PyMuPDF, Pytesseract
+Data Pipeline & Automation: N8N, Pytesseract (OCR), Pandas, NumPy
 
-Web & API: Streamlit, FastAPI, Uvicorn
+Backend & API: FastAPI, Uvicorn, SQLAlchemy
 
-Vector Store: FAISS
+Frontend: Streamlit
 
-Developer Tools: Git, GitHub, Pytest, Unittest
+Database: SQLite
+
+Developer Tools: Git, GitHub, Docker, Pytest, Unittest

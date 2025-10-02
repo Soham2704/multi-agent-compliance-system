@@ -1,0 +1,68 @@
+{
+    "project_id": "proj_skytower_01",
+    "case_id": "mumbai_001",
+    "city": "Mumbai",
+    "inputs": {
+        "plot_size": 2000,
+        "location": "urban",
+        "road_width": 20
+    },
+    "entitlements": {
+        "analysis_summary": "### **AI Consultant Report: Planning & Zoning Analysis**\n**Date:** October 02, 2025\n**Subject:** Analysis of Development Potential\n**Case Parameters:**\n* **Plot Size:** 2000 sqm\n* **Location Type:** urban\n* **Abutting Road Width:** 20 m\n---\n#### **1. Analysis Summary & Applicable Rules**\n\nBased on the provided context, several development regulations are applicable to the specified plot. However, the data contains multiple conflicting rules, particularly regarding the Floor Space Index (FSI) and Substation Area. This indicates that the final entitlements will depend on specific conditions not included in the provided context.\n\nThe following key rules have been identified and consolidated:\n\n*   **Floor Space Index (FSI):** There are multiple, conflicting FSI values provided, leading to different potential buildable areas. The possible Total FSI values are **2.4**, **2.7**, or **4.0**. The components for the FSI of 2.4 are specified as Base FSI (1.0), Premium/Additional FSI (0.5), and Transfer of Development Rights (TDR) FSI (0.9).\n*   **Landscaped Open Space (LOS):** A mandatory **15%** of the total plot area must be reserved for landscaped open space. This area must have a minimum contiguous size of **125 sqm** and a minimum dimension of **7.5 meters** on any side.\n*   **Front Open Space:** The front marginal open space (setback) from the property line must be a minimum of **3.0 meters** and is limited to a maximum required width of **4.5 meters**.\n*   **Substation Area:** Conflicting rules specify a maximum permissible area for an electrical substation, with values of **40 sqm** and **66 sqm**.\n\nThe primary challenge in this analysis is determining which of the conflicting rules applies to this specific case.\n\n#### **2. Entitlements & Calculations**\n\nBased on the 2000 sqm plot size, the following entitlements are calculated. Note that the buildable area is presented in scenarios due to the conflicting FSI rules.\n\n**A. Total Buildable Area (Based on FSI)**\n\nThe Total Buildable Area is calculated as: `Plot Size \u00d7 Total FSI`.\n\n*   **Scenario 1 (Total FSI = 2.4):**\n    *   `2000 sqm \u00d7 2.4 = 4800 sqm`\n*   **Scenario 2 (Total FSI = 2.7):**\n    *   `2000 sqm \u00d7 2.7 = 5400 sqm`\n*   **Scenario 3 (Total FSI = 4.0):**\n    *   `2000 sqm \u00d7 4.0 = 8000 sqm`\n\n**B. Required Landscaped Open Space (LOS)**\n\nThe required LOS area is calculated as: `Plot Size \u00d7 LOS Percentage`.\n\n*   **Calculation:**\n    *   `2000 sqm \u00d7 15% = 300 sqm`\n*   **Compliance Check:**\n    *   The calculated area of **300 sqm** is greater than the required minimum of 125 sqm, so this rule is met.\n    *   This 300 sqm area must be planned to have a minimum dimension of **7.5 meters** on all sides.\n\n**C. Other Requirements**\n\n*   **Front Open Space:** A setback of between 3.0 m and 4.5 m must be provided along the front of the plot.\n*   **Substation Area:** A provision for a substation may be required, with a maximum area of either 40 sqm or 66 sqm, pending clarification of the applicable rule.\n\n#### **3. Key Missing Information**\n\nTo provide a definitive analysis and resolve the conflicts in the provided rules, the following critical information is required:\n\n1.  **Rule Applicability Conditions:** The context lacks the conditions that determine which rule applies. For example, does the FSI of 4.0 apply only to roads wider than 20m? Does the FSI of 2.7 apply to a specific scheme or building use? Without these conditions, it is impossible to determine the correct entitlements.\n2.  **Specific Zoning Designation:** \"Urban\" is a general classification. The plot's precise zoning designation (e.g., Residential R-2, General Commercial C-1, Mixed-Use) is essential as it is the primary factor governing FSI, setbacks, and permissible uses.\n3.  **Proposed Building Use:** The intended use of the building (e.g., residential apartments, commercial office, hospital) is crucial, as different uses often have unique regulations, including parking standards, fire safety norms, and amenity space requirements not mentioned in the context.\n4.  **Plot Dimensions and Topography:** The area (2000 sqm) is known, but the plot's shape, dimensions (length and width), and orientation are needed to create a viable site plan that accommodates the required front setback and the 7.5m minimum dimension for the Landscaped Open Space.\n\n#### **4. Recommended Next Steps**\n\n1.  **Verify Applicable Regulations:** Consult the official Development Control and Promotion Regulations (DCPR) for the municipality. Specifically, search for the rules governing FSI based on **road width**, **zoning designation**, and **plot area** to resolve the conflicting values found.\n2.  **Obtain Zoning Confirmation:** Request a Zoning Certificate or check the official planning maps from the local municipal authority to confirm the exact zoning of the property.\n3.  **Commission a Plot Survey:** Engage a licensed surveyor to create a detailed survey plan of the plot. This plan should include exact dimensions, area, location of the abutting road, and any existing structures or natural features.\n4.  **Define Project Scope:** Clearly define the intended use and type of development to identify all other relevant regulations that may apply to the project.\n5.  **Engage a Local Architect/Planner:** It is highly recommended to consult with a local professional who has experience with the specific municipal authority. They can provide a definitive interpretation of the regulations, resolve the identified ambiguities, and guide the project's design and approval process.\n---\n**Disclaimer:** This report is an automated analysis based solely on the structured data provided in the `<context>`. It highlights potential entitlements and identifies conflicts and missing information. It is not a substitute for legal advice or the professional judgment of a qualified architect, planner, or legal counsel. All calculations and interpretations should be verified against the official, complete, and current municipal development regulations before making any financial or design commitments.",
+        "rules_from_db": [
+            {
+                "base_fsi": 1.33,
+                "total_fsi": 2.7
+            },
+            {
+                "base_fsi": 1.0,
+                "additional_fsi_premium": 0.5,
+                "tdr_fsi": 0.9,
+                "total_fsi": 2.4
+            },
+            {
+                "total_fsi": {
+                    "max": 4.0
+                }
+            },
+            {
+                "max_required_front_open_space_m": 4.5
+            },
+            {
+                "front_marginal_open_space_m": {
+                    "min": 3.0
+                }
+            },
+            {
+                "total_fsi": 4.0
+            },
+            {
+                "base_fsi": 1.0,
+                "premium_fsi": 0.5,
+                "tdr_fsi": 0.9,
+                "total_fsi": 2.4
+            },
+            {
+                "los_percentage": 15
+            },
+            {
+                "max_substation_area_sqm": 40
+            },
+            {
+                "max_substation_area_sqm": 66
+            },
+            {
+                "los_percentage": 15,
+                "min_area_sqm": 125,
+                "min_dimension_m": 7.5
+            }
+        ],
+        "carpet_area_sqm": 3780.0
+    },
+    "rl_decision": {
+        "optimal_action": 4,
+        "confidence_score": 0.89
+    },
+    "geometry_file": "/outputs/projects/proj_skytower_01/mumbai_001_geometry.stl",
+    "logs": "/logs/mumbai_001"
+}

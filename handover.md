@@ -1,66 +1,89 @@
-Multi-Agent Compliance System - Handover Document
-This document provides a technical overview for developers who will be maintaining or extending this project. It assumes the reader has already reviewed the main README.md for setup and execution instructions.
+Handover: Multi-Agent Compliance System API
+To: AI Design Platform Team (Yash, Nipun, Bhavesh, Anmol)
 
-1. Repository Structure
-The repository is organized into a modular structure to separate concerns:
+From: Soham Puthane
 
-/agents/: Contains the Python classes for each specialized agent (parser, calculators, geometry).
+Date: October 02, 2025
 
-/inputs/: Holds all input data, including the case_studies for the main pipeline.
+Version: 1.0 (Production-Ready Service)
 
-/io/: The default directory for raw data files (source PDFs) and user-generated feedback (feedback.jsonl).
+1. Overview & Purpose
+This document provides a technical handover for the Multi-Agent Compliance System. The system has been successfully upgraded from a standalone prototype into a professional, integration-ready API service.
 
-/outputs/: The directory where the final results of a pipeline run are saved, including JSON reports and STL geometry files.
+The service's core purpose is to automate the analysis of regulatory compliance for development cases by ingesting unstructured PDF documents, processing them through a multi-agent AI pipeline, and exposing the results via a robust API.
 
-/reports/: Contains all structured logs, including the main agent_log.jsonl and the rl_training_log.jsonl.
+2. Repository Structure
+The repository is structured into modular components for clarity and maintainability:
 
-/rl_env/: Contains the custom Gymnasium environment for the RL agent and the scripts for creating the oracle and training the agent.
+/agents/: Contains all specialized agent classes (Calculators, Database Query, Geometry, etc.).
 
-/rules_kb/: The "knowledge base." This stores the parsed JSON versions of the rulebooks and the trained FAISS vector store indexes.
+/inputs/case_studies/: Location for input JSON files for batch processing or testing.
 
-/tests/: Contains the pytest test suite for automated validation of the system.
+/outputs/projects/: The dynamic output directory where final reports and geometry files are saved, organized by project_id.
 
-app.py: The main Streamlit front-end application.
+/reports/: Contains structured logs (.jsonl format) for system observability.
 
-feedback_api.py: The FastAPI back-end server for handling user feedback.
+/rl_env/: Contains the custom Gymnasium environment and training scripts for the Human-in-the-Loop RL agent.
 
-main.py: The central orchestrator that runs the full, end-to-end pipeline.
+/rules_db/: Contains the master SQLite database (rules.db) and the AI-generated rule extraction files.
 
-requirements.txt: A complete list of all Python dependencies.
+/tests/: Contains the pytest suite for automated system validation.
 
-2. How to Add a New Rule Set (e.g., a New City)
-The system is designed to be easily extendable to new cities. This is a three-step data engineering process:
+/automation/n8n/: Contains exported N8N workflows for automating data ingestion tasks.
 
-Download the Document: Add the new city's regulation PDF to the io/ folder. It's recommended to add the URL to the download_docs.py script to automate this.
+main.py: The core FastAPI application server.
 
-Parse the Document: Run the OCR parser to create a structured JSON knowledge base for the new city. Use the --input and --output flags.
+main_pipeline.py: The core orchestration logic for the multi-agent pipeline.
 
-python agents/parse_agent.py --input io/NewCity_DCR.pdf --output rules_kb/newcity_rules.json
+database_setup.py & populate_db.py: Scripts for initializing and populating the rules database.
 
-Create the Vector Store: Run the vector store creation script to build the searchable FAISS index (the "brain") for the new city.
+extract_rules_ai.py: The AI-powered data curation script for populating the database from unstructured text.
 
-python create_vector_store.py --input rules_kb/newcity_rules.json --output rules_kb/faiss_index_newcity
+3. How to Run the System
+The system is a full-stack application. Please refer to the main README.md for detailed, step-by-step setup and execution instructions.
 
-Update the Pipeline: In main.py, within the initialize_system function, add the new city and its corresponding FAISS index path to the vector_stores dictionary. The pipeline will now automatically support the new city.
+4. API Integration Guide (For Anmol & Yash)
+The service is live at http://127.0.0.1:8000. The full, interactive API documentation is available at http://127.0.0.1:8000/docs.
 
-3. How to Re-train the RL Agent (Human-in-the-Loop)
-The RL agent is designed to learn from a combination of the AI-generated oracle and new human feedback. To create a new, smarter agent model after new feedback has been collected:
+Key Endpoints:
+POST /run_case: This is the primary endpoint. It accepts a CaseInput JSON (including project_id) and returns the full, standardized analysis report.
 
-Ensure Data is Present: Confirm that you have the rl_env/oracle_data.json file and that new entries exist in io/feedback.jsonl from user interactions with the app.
+POST /feedback: This endpoint is used by the UI to submit user feedback (👍/👎). It accepts a FeedbackInput JSON and logs the feedback to io/feedback.jsonl.
 
-Run the Training Script: Execute the training script from the main project directory.
+GET /projects/{project_id}/cases: Retrieves all previously processed case reports for a given project.
+
+GET /logs/{case_id}: Retrieves the detailed, structured agent logs for a specific case run.
+
+CORS is enabled for all origins (*) for easy development integration.
+
+5. How to Add New Rules & Cities
+The system is designed to be easily extensible.
+
+To Add a New City (e.g., Ahmedabad):
+Download PDF: Add the new city's PDF document to the DOCUMENTS dictionary in download_docs.py and run it.
+
+Parse with OCR: Run the agents/parse_agent.py script, providing the path to the new PDF and a new output path (e.g., rules_kb/ahmedabad_rules.json).
+
+Use AI to Populate DB: Run the extract_rules_ai.py script, providing the new JSON from the previous step and the city name. This will automatically populate the rules.db with the new, AI-extracted rules.
+
+python extract_rules_ai.py --input rules_kb/ahmedabad_rules.json --city Ahmedabad
+
+6. How to Run RL Training
+The RL agent is designed to learn from both synthetic data and human feedback. To re-train the model with the latest feedback:
+
+Ensure io/feedback.jsonl contains the latest user feedback.
+
+Run the training script:
 
 python rl_env/train_complex_agent.py
 
-Output: This script will consume all the latest data, train a new agent using the advanced configuration (larger network, entropy bonus), and save the updated model to rl_env/ppo_hirl_agent.zip. The main application will need to be updated to load this new model file if desired.
+This will create a new, updated ppo_hirl_agent.zip file containing the agent's improved "brain." The API server will automatically load this new model on its next restart.
 
-4. Known Limitations & Future Improvements
-This system is a robust prototype, but a production-grade version would benefit from the following:
+7. Known Limitations
+AI Rule Extraction: The extract_rules_ai.py agent is a powerful "first-pass" tool but is not 100% perfect. The extracted rules should be considered a "draft" and ideally reviewed by a human expert before being used in a production-critical system.
 
-Advanced Geometry: The current geometry agent creates a simplified block. A future version could generate a more detailed building mass based on setback calculations extracted from the RAG agent's analysis.
+Database Schema: The current rules table is highly effective but may need to be extended with more complex relational tables to handle very nested or conditional rules.
 
-Dynamic RL Action Space: The RL agent's action space is currently fixed (5 actions). A more advanced implementation would involve a dynamic action space that changes based on the number of rules found by the RAG agent for a specific case. This would require a more complex model architecture.
+RL Agent State: The RL agent's state is currently simplified to [plot_size, location, road_width]. For more complex policy learning, this state representation would need to be enriched, potentially with embeddings of the rules themselves.
 
-LLM Evaluation Suite: The RAG agent's performance is currently judged manually. A production system would include an LLM evaluation framework (like Ragas or TruLens) to automatically score the quality, accuracy, and groundedness of its reports.
-
-Configuration Management: Key paths and model names are currently hardcoded. A future version should move these into a central config.py file for easier management.
+This concludes the handover. The system is fully functional, tested, documented, and ready for integration into the AI Design Platform.

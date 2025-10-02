@@ -1,0 +1,11 @@
+{
+    "project_id": "proj_compact_living_03",
+    "case_id": "mumbai_002_small_plot",
+    "city": "Mumbai",
+    "document": "DCPR_2034.pdf",
+    "parameters": {
+        "plot_size": 400,
+        "location": "suburban",
+        "road_width": 9
+    }
+}
