@@ -1,0 +1,168 @@
+{
+  "name": "One-Click Ingestion Pipeline(better)",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2401c757-f0ef-4fa4-b6e8-2db4888f0146",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6c679487-7ed3-469a-8ee3-4cf4f0924bce",
+              "name": "documentURL",
+              "value": "https://www.auda.org.in/uploads/Assets/rdp/commongdcr08012016052529533.pdf",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "c4c7b845-2ca4-46a9-85cf-6b890c0a3dcf",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.documentURL }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "1ad3ae42-67fe-44bb-ae06-87a4819751dc",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "commongdcr08012016052529533.pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        624,
+        0
+      ],
+      "id": "e92d6410-6754-430f-a229-7c498eca4d8c",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "command": ".\\venv\\Scripts\\python.exe agents/parse_agent.py --input commongdcr08012016052529533.pdf --output rules_kb/temp_rules.json"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        832,
+        0
+      ],
+      "id": "500fe3e9-2f5e-41f3-9246-d2348329942b",
+      "name": "Execute Command"
+    },
+    {
+      "parameters": {
+        "command": ".\\venv\\Scripts\\python.exe extract_rules_ai.py --input rules_kb/temp_rules.json --city Mumbai"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        0
+      ],
+      "id": "77944581-1bf1-4be1-9576-7d505c209514",
+      "name": "Execute Command1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "Execute Command1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2c5f3d57-2bbd-47cb-89a3-ccfd3a08a586",
+  "meta": {
+    "instanceId": "4da37a72e90bae80f98259c2286b2b3ce4274fa24600dab7bb726f8edb1bf5e9"
+  },
+  "id": "ERDvFGv5LZtTEdru",
+  "tags": []
+}

@@ -1,0 +1,89 @@
+{
+  "name": "RL_agent_training",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d6a9ecad-e6ba-4d13-918f-23c7d530e07a",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "fileSelector": "io/feedback.jsonl",
+        "options": {
+          "fileName": "dataset"
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "e283a2fc-0463-473d-8b16-9d283f770491",
+      "name": "Read/Write Files from Disk",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "command": ".\\venv\\Scripts\\python.exe rl_env/train_complex_agent.py"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "56c3cf13-6dcd-4f45-9b62-29726cef362c",
+      "name": "Execute Command"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b17e2edb-a5d3-4c91-afc3-6e8cdad83ff0",
+  "meta": {
+    "instanceId": "4da37a72e90bae80f98259c2286b2b3ce4274fa24600dab7bb726f8edb1bf5e9"
+  },
+  "id": "25NaiVr8a3V5rHtg",
+  "tags": []
+}

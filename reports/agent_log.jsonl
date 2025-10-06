@@ -518,3 +518,36 @@
 {"timestamp": "2025-10-02T11:18:56.242225Z", "level": "INFO", "message": "Found 3 rules in DB for mumbai_002_small_plot.", "source": "MultiAgentSystem"}
 {"timestamp": "2025-10-02T11:19:24.766682Z", "level": "INFO", "message": "LLM expert report complete for mumbai_002_small_plot.", "source": "MultiAgentSystem"}
 {"timestamp": "2025-10-02T11:19:45.172819Z", "level": "INFO", "message": "Feedback received for case mumbai_002_small_plot: up", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T05:59:01.619165Z", "level": "INFO", "message": "Server starting up... Initializing all agents and models.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T05:59:03.759676Z", "level": "INFO", "message": "All agents initialized successfully. Server is ready.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:02:22.230703Z", "level": "INFO", "message": "Database session closed.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:02:29.189769Z", "level": "INFO", "message": "Server starting up... Initializing all agents and models.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:02:31.336690Z", "level": "INFO", "message": "All agents initialized successfully. Server is ready.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:02:31.338078Z", "level": "INFO", "message": "Database session closed.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:02:37.858019Z", "level": "INFO", "message": "Server starting up... Initializing all agents and models.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:02:39.984507Z", "level": "INFO", "message": "All agents initialized successfully. Server is ready.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:07:07.957463Z", "level": "INFO", "message": "Processing case mumbai_001 for project proj_skytower_01.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:07:07.972949Z", "level": "INFO", "message": "Found 11 rules in DB for mumbai_001.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:07:41.092461Z", "level": "INFO", "message": "LLM expert report complete for mumbai_001.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:11:38.385666Z", "level": "INFO", "message": "Feedback received and saved for case mumbai_001: up", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:13:11.380012Z", "level": "WARNING", "message": "No logs found for case_id: mumbai_001", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:24:54.483790Z", "level": "INFO", "message": "Database session closed.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:25:01.016464Z", "level": "INFO", "message": "Server starting up...", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:25:03.220081Z", "level": "INFO", "message": "All agents initialized successfully.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:25:03.220630Z", "level": "INFO", "message": "Database session closed.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:25:09.728010Z", "level": "INFO", "message": "Server starting up...", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:25:11.797053Z", "level": "INFO", "message": "All agents initialized successfully.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:28:31.463497Z", "level": "INFO", "message": "Processing case mumbai_001 for project proj_skytower_01.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:28:31.501940Z", "level": "INFO", "message": "Found 11 rules in DB for mumbai_001.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:29:01.855496Z", "level": "INFO", "message": "LLM expert report complete for mumbai_001.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:38:55.400532Z", "level": "INFO", "message": "Database session closed.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:39:02.298745Z", "level": "INFO", "message": "Server starting up...", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:39:04.433964Z", "level": "INFO", "message": "All agents initialized successfully.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:54:22.891687Z", "level": "INFO", "message": "Server starting up...", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:54:24.979859Z", "level": "INFO", "message": "All agents initialized successfully.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:55:17.636775Z", "level": "INFO", "message": "Processing case nashik_001 for project proj_grapevine_plaza_05.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:55:17.644426Z", "level": "INFO", "message": "Found 5 rules in DB for nashik_001.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:55:47.509286Z", "level": "INFO", "message": "LLM expert report complete for nashik_001.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:56:17.420994Z", "level": "INFO", "message": "Processing case ahmedabad_001 for project proj_lotus_towers_04.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:56:17.422996Z", "level": "INFO", "message": "Found 1 rules in DB for ahmedabad_001.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T06:56:36.585957Z", "level": "INFO", "message": "LLM expert report complete for ahmedabad_001.", "source": "MultiAgentSystem"}

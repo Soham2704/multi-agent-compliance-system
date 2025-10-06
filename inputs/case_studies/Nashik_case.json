@@ -1,0 +1,11 @@
+{
+    "project_id": "proj_grapevine_plaza_05",
+    "case_id": "nashik_001",
+    "city": "Nashik",
+    "document": "Nashik_DCR.pdf",
+    "parameters": {
+        "plot_size": 1200,
+        "location": "suburban",
+        "road_width": 12
+    }
+}

@@ -1,89 +1,86 @@
-Handover: Multi-Agent Compliance System API
-To: AI Design Platform Team (Yash, Nipun, Bhavesh, Anmol)
+Handover Document: Multi-Agent AI Compliance System (Phase 2)
+Version: 2.0
+Handover Date: October 6, 2025
+Author: Soham Phutane
+For: Yash, Nipun, Bhavesh, Anmol (AI Design Platform Team)
 
-From: Soham Puthane
+1. Project Overview & Purpose
+This document provides a technical overview for the integration of the Multi-Agent Compliance System. The system has been upgraded from a standalone prototype into a professional, deployable FastAPI service designed to act as the core compliance engine for the main AI Design Platform.
 
-Date: October 02, 2025
-
-Version: 1.0 (Production-Ready Service)
-
-1. Overview & Purpose
-This document provides a technical handover for the Multi-Agent Compliance System. The system has been successfully upgraded from a standalone prototype into a professional, integration-ready API service.
-
-The service's core purpose is to automate the analysis of regulatory compliance for development cases by ingesting unstructured PDF documents, processing them through a multi-agent AI pipeline, and exposing the results via a robust API.
+The core architecture is a multi-agent pipeline that is now database-driven, supports multiple regions, and includes an automated, human-in-the-loop training system for its RL agent. This document outlines how to integrate with the service, manage its data, and run its automations.
 
 2. Repository Structure
-The repository is structured into modular components for clarity and maintainability:
+The repository is organized into modular components for maintainability and scalability.
 
-/agents/: Contains all specialized agent classes (Calculators, Database Query, Geometry, etc.).
+/
+├── agents/               # Core agent logic (calculators, database query, etc.)
+├── automation/           # N8N workflows and documentation
+│   └── n8n/
+├── inputs/               # Input data for case studies
+│   └── case_studies/
+├── outputs/              # Generated reports and geometry, organized by project
+│   └── projects/
+├── reports/              # Structured logs for pipeline and RL training
+├── rl_env/               # Custom Gymnasium environment and RL training scripts
+├── rules_db/             # The SQLite database and AI-extracted rule files
+├── tests/                # The `pytest` test suite for the system
+├── app.py                # The Streamlit front-end application (for demo & feedback)
+├── main.py               # The main FastAPI back-end server (THE API BRIDGE)
+├── main_pipeline.py      # The core logic for the compliance pipeline
+├── database_setup.py     # Script to initialize the database schema
+├── extract_rules_ai.py   # The AI-powered data curation pipeline script
+└── ...                   # Other config and documentation files
 
-/inputs/case_studies/: Location for input JSON files for batch processing or testing.
+3. How to Add New Rules / Cities (For Nipun)
+The system is designed to be easily extensible. To add a new city (e.g., "Nashik"):
 
-/outputs/projects/: The dynamic output directory where final reports and geometry files are saved, organized by project_id.
+Acquire Data: Add the new PDF document URL to the DOCUMENTS dictionary in download_docs.py and run it.
 
-/reports/: Contains structured logs (.jsonl format) for system observability.
+Parse with OCR: Run the OCR parser to create the unstructured JSON transcript. This is the input for the AI curator.
 
-/rl_env/: Contains the custom Gymnasium environment and training scripts for the Human-in-the-Loop RL agent.
+python agents/parse_agent.py --input io/Nashik_DCR.pdf --output rules_kb/nashik_rules.json
 
-/rules_db/: Contains the master SQLite database (rules.db) and the AI-generated rule extraction files.
+AI-Powered Extraction: Run the AI data curator to automatically populate the master rules.db database. This can also be done via the N8N workflow.
 
-/tests/: Contains the pytest suite for automated system validation.
+python extract_rules_ai.py --input rules_kb/nashik_rules.json --city Nashik
 
-/automation/n8n/: Contains exported N8N workflows for automating data ingestion tasks.
+The system's main API will automatically be able to use the new city's rules on the next server startup.
 
-main.py: The core FastAPI application server.
+4. How the Frontend Calls the API (For Yash & Anmol)
+The system is now a professional API service. The Streamlit app.py serves as a perfect example of how to interact with it.
 
-main_pipeline.py: The core orchestration logic for the multi-agent pipeline.
+To Run a Case: Send a POST request to the /run_case endpoint. The required JSON body is defined by the CaseInput model in main.py and can be seen in the interactive docs at http://127.0.0.1:8000/docs.
 
-database_setup.py & populate_db.py: Scripts for initializing and populating the rules database.
-
-extract_rules_ai.py: The AI-powered data curation script for populating the database from unstructured text.
-
-3. How to Run the System
-The system is a full-stack application. Please refer to the main README.md for detailed, step-by-step setup and execution instructions.
-
-4. API Integration Guide (For Anmol & Yash)
-The service is live at http://127.0.0.1:8000. The full, interactive API documentation is available at http://127.0.0.1:8000/docs.
-
-Key Endpoints:
-POST /run_case: This is the primary endpoint. It accepts a CaseInput JSON (including project_id) and returns the full, standardized analysis report.
-
-POST /feedback: This endpoint is used by the UI to submit user feedback (👍/👎). It accepts a FeedbackInput JSON and logs the feedback to io/feedback.jsonl.
-
-GET /projects/{project_id}/cases: Retrieves all previously processed case reports for a given project.
-
-GET /logs/{case_id}: Retrieves the detailed, structured agent logs for a specific case run.
+To Submit Feedback: Send a POST request to the /feedback endpoint. The required schema is FeedbackInput.
 
 CORS is enabled for all origins (*) for easy development integration.
 
-5. How to Add New Rules & Cities
-The system is designed to be easily extensible.
+5. The RL Feedback & Retraining Cycle (For Bhavesh)
+The system implements a complete Human-in-the-Loop Reinforcement Learning (HIRL) cycle.
 
-To Add a New City (e.g., Ahmedabad):
-Download PDF: Add the new city's PDF document to the DOCUMENTS dictionary in download_docs.py and run it.
+User feedback (👍/👎) is collected via the UI and stored in io/feedback.jsonl by the /feedback API endpoint.
 
-Parse with OCR: Run the agents/parse_agent.py script, providing the path to the new PDF and a new output path (e.g., rules_kb/ahmedabad_rules.json).
+The rl_retraining_workflow.json in N8N is an automated workflow that periodically checks this file.
 
-Use AI to Populate DB: Run the extract_rules_ai.py script, providing the new JSON from the previous step and the city name. This will automatically populate the rules.db with the new, AI-extracted rules.
+If new feedback is found, the N8N workflow automatically triggers the rl_env/train_complex_agent.py script.
 
-python extract_rules_ai.py --input rules_kb/ahmedabad_rules.json --city Ahmedabad
+The custom ComplexEnv environment loads both the synthetic oracle data and the new human feedback, using a stronger +2/-2 reward for human-rated cases.
 
-6. How to Run RL Training
-The RL agent is designed to learn from both synthetic data and human feedback. To re-train the model with the latest feedback:
+A new, smarter agent model (ppo_hirl_agent.zip) is saved. The main API will automatically load this new agent on its next restart.
 
-Ensure io/feedback.jsonl contains the latest user feedback.
+6. N8N Automation Workflows (For the Platform Team)
+The automation/n8n/ directory contains two key workflows. See the README.md in that directory for detailed explanations.
 
-Run the training script:
+pdf_ingestion_workflow.json: A "One-Click" pipeline to automate the entire data curation process for a new city.
 
-python rl_env/train_complex_agent.py
+rl_retraining_workflow.json: The automated "AI Trainer" that implements the HIRL cycle.
 
-This will create a new, updated ppo_hirl_agent.zip file containing the agent's improved "brain." The API server will automatically load this new model on its next restart.
+7. Known Limitations & Next Roadmap
+Data Curation Quality: The AI rule extraction is a "best-effort" process. While powerful, its output should be reviewed by a human expert before being used in a production legal context. This is a perfect Human-in-the-Loop task for the platform.
 
-7. Known Limitations
-AI Rule Extraction: The extract_rules_ai.py agent is a powerful "first-pass" tool but is not 100% perfect. The extracted rules should be considered a "draft" and ideally reviewed by a human expert before being used in a production-critical system.
+RL Agent Simplicity: The current RL agent is trained on a simplified version of the problem to demonstrate the HIRL pipeline. The next step is to upgrade the environment to handle dynamic action spaces based on the specific rules found in the database.
 
-Database Schema: The current rules table is highly effective but may need to be extended with more complex relational tables to handle very nested or conditional rules.
+DB Sync: The final reports are currently saved as .json files in the outputs/ directory. A final integration step is required to sync these structured outputs with the core AI Design Platform's main database (work for Raj/Bhavesh).
 
-RL Agent State: The RL agent's state is currently simplified to [plot_size, location, road_width]. For more complex policy learning, this state representation would need to be enriched, potentially with embeddings of the rules themselves.
+Thank you for the opportunity to build this system. I am confident it provides a robust and scalable foundation for the AI Design Platform.
 
-This concludes the handover. The system is fully functional, tested, documented, and ready for integration into the AI Design Platform.

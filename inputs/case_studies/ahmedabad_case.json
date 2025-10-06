@@ -1,0 +1,11 @@
+{
+    "project_id": "proj_lotus_towers_04",
+    "case_id": "ahmedabad_001",
+    "city": "Ahmedabad",
+    "document": "Ahmedabad_DCR.pdf",
+    "parameters": {
+        "plot_size": 1500,
+        "location": "urban",
+        "road_width": 15
+    }
+}
