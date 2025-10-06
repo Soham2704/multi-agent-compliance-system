@@ -551,3 +551,20 @@
 {"timestamp": "2025-10-06T06:56:17.420994Z", "level": "INFO", "message": "Processing case ahmedabad_001 for project proj_lotus_towers_04.", "source": "MultiAgentSystem"}
 {"timestamp": "2025-10-06T06:56:17.422996Z", "level": "INFO", "message": "Found 1 rules in DB for ahmedabad_001.", "source": "MultiAgentSystem"}
 {"timestamp": "2025-10-06T06:56:36.585957Z", "level": "INFO", "message": "LLM expert report complete for ahmedabad_001.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T08:07:49.743922Z", "level": "INFO", "message": "Server starting up... Initializing MCP Client and AI models.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T08:07:52.245066Z", "level": "INFO", "message": "All components and MCP Client initialized successfully. Server is ready.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T08:09:02.970888Z", "level": "INFO", "message": "Processing case mumbai_001 for project proj_skytower_01.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T08:09:02.970888Z", "level": "INFO", "message": "Querying MCP for rules for case mumbai_001...", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T08:09:02.986814Z", "level": "INFO", "message": "Executing LLM agent to generate expert report for mumbai_001...", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T08:09:40.784697Z", "level": "INFO", "message": "LLM expert report complete for mumbai_001.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T10:09:33.822601Z", "level": "INFO", "message": "Server starting up... Initializing MCP Client and AI models.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T10:09:37.337823Z", "level": "INFO", "message": "All components and MCP Client initialized successfully. Server is ready.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T10:09:52.984802Z", "level": "INFO", "message": "Processing case ahmedabad_001 for project proj_lotus_towers_04.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T10:09:52.984802Z", "level": "INFO", "message": "Querying MCP for rules for case ahmedabad_001...", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T10:09:52.999546Z", "level": "INFO", "message": "Executing LLM agent to generate expert report for ahmedabad_001...", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T10:10:23.952063Z", "level": "INFO", "message": "LLM expert report complete for ahmedabad_001.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T10:11:22.971051Z", "level": "INFO", "message": "Processing case nashik_001 for project proj_grapevine_plaza_05.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T10:11:22.971051Z", "level": "INFO", "message": "Querying MCP for rules for case nashik_001...", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T10:11:22.978908Z", "level": "INFO", "message": "Executing LLM agent to generate expert report for nashik_001...", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T10:11:55.908936Z", "level": "INFO", "message": "LLM expert report complete for nashik_001.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-06T10:21:06.380103Z", "level": "INFO", "message": "Feedback saved via MCP for case nashik_001", "source": "MultiAgentSystem"}

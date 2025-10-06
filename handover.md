@@ -1,7 +1,8 @@
-Handover Document: Multi-Agent AI Compliance System (Phase 2)
+Technical Handover: Multi-Agent Compliance System (Phase 2)
 Version: 2.0
-Handover Date: October 6, 2025
-Author: Soham Phutane
+Handover Date: October 06, 2025
+Author: Soham Phutane 
+
 For: Yash, Nipun, Bhavesh, Anmol (AI Design Platform Team)
 
 1. Project Overview & Purpose
@@ -24,23 +25,37 @@ The repository is organized into modular components for maintainability and scal
 ├── rl_env/               # Custom Gymnasium environment and RL training scripts
 ├── rules_db/             # The SQLite database and AI-extracted rule files
 ├── tests/                # The `pytest` test suite for the system
-├── app.py                # The Streamlit front-end application (for demo & feedback)
+│
 ├── main.py               # The main FastAPI back-end server (THE API BRIDGE)
 ├── main_pipeline.py      # The core logic for the compliance pipeline
+├── mcp_client.py         # The professional client for all database (MCP) interactions
 ├── database_setup.py     # Script to initialize the database schema
 ├── extract_rules_ai.py   # The AI-powered data curation pipeline script
-└── ...                   # Other config and documentation files
+├── app.py                # The Streamlit front-end application (for demo & feedback)
+│
+├── Dockerfile            # Recipe for deploying the FastAPI service.
+├── handover_phase2.md    # This document.
+├── README.md             # The main, public-facing project documentation.
+└── requirements.txt      # All Python dependencies.
 
 3. How to Add New Rules / Cities (For Nipun)
-The system is designed to be easily extensible. To add a new city (e.g., "Nashik"):
+The system is designed to be easily extensible. To add a new city (e.g., "Nashik") is a three-step, automated process.
 
-Acquire Data: Add the new PDF document URL to the DOCUMENTS dictionary in download_docs.py and run it.
+Step 1: Download the New PDF
 
-Parse with OCR: Run the OCR parser to create the unstructured JSON transcript. This is the input for the AI curator.
+Add the new document's URL and output path to the DOCUMENTS dictionary in download_docs.py.
+
+Run the script: python download_docs.py
+
+Step 2: Parse the PDF with OCR
+
+Run the reusable parse_agent.py script, providing the path to the new PDF and a new output path for the unstructured JSON transcript.
 
 python agents/parse_agent.py --input io/Nashik_DCR.pdf --output rules_kb/nashik_rules.json
 
-AI-Powered Extraction: Run the AI data curator to automatically populate the master rules.db database. This can also be done via the N8N workflow.
+Step 3: Use AI to Populate the Database
+
+Run the high-performance extract_rules_ai.py script, pointing it at the new unstructured JSON and specifying the city name. The AI agent will automatically extract the rules and commit them to the master rules.db.
 
 python extract_rules_ai.py --input rules_kb/nashik_rules.json --city Nashik
 
@@ -62,7 +77,7 @@ User feedback (👍/👎) is collected via the UI and stored in io/feedback.json
 
 The rl_retraining_workflow.json in N8N is an automated workflow that periodically checks this file.
 
-If new feedback is found, the N8N workflow automatically triggers the rl_env/train_complex_agent.py script.
+If new feedback is found, the N8N workflow automatically executes the python rl_env/train_complex_agent.py command.
 
 The custom ComplexEnv environment loads both the synthetic oracle data and the new human feedback, using a stronger +2/-2 reward for human-rated cases.
 
@@ -83,4 +98,3 @@ RL Agent Simplicity: The current RL agent is trained on a simplified version of 
 DB Sync: The final reports are currently saved as .json files in the outputs/ directory. A final integration step is required to sync these structured outputs with the core AI Design Platform's main database (work for Raj/Bhavesh).
 
 Thank you for the opportunity to build this system. I am confident it provides a robust and scalable foundation for the AI Design Platform.
-

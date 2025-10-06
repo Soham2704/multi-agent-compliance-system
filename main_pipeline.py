@@ -3,16 +3,19 @@ import os
 import numpy as np
 import re
 from datetime import datetime
-import torch # <-- NEW: Import the "translator" library
+import torch
 
-# --- Import our logger and necessary libraries ---
-from logging_config import logger
 from langchain.prompts import PromptTemplate
+from logging_config import logger
+
+# Import agents that are now simple, stateless tools
+from agents.calculator_agent import EntitlementsAgent, AllowableEnvelopeAgent
+from agents.geometry_agent import GeometryAgent
+from agents.interior_agent import InteriorDesignAgent
 
 def process_case_logic(case_data, system_state):
     """
-    This is the final, integration-ready version of the core pipeline logic.
-    It orchestrates all agents and produces a standardized output.
+    This is the core pipeline logic, refactored to use the MCPClient as the single source of truth.
     """
     # --- A. Unpack Inputs ---
     project_id = case_data.get("project_id", "default_project")
@@ -20,19 +23,21 @@ def process_case_logic(case_data, system_state):
     city = case_data.get("city")
     parameters = case_data.get("parameters", {})
     logger.info(f"Processing case {case_id} for project {project_id}.")
-
-    # --- B. Database-First Rule Retrieval ---
+    
+    # --- B. Query MCP for Hard Facts ---
+    logger.info(f"Querying MCP for rules for case {case_id}...")
     db_parameters = {
         "road_width_m": parameters.get("road_width"),
         "plot_area_sqm": parameters.get("plot_size"),
         "location": parameters.get("location")
     }
-    matching_rules = system_state.db_agent.find_matching_rules(city, db_parameters)
+    matching_rules = system_state.mcp_client.query_rules(city, db_parameters)
     deterministic_entitlements = [rule.entitlements for rule in matching_rules] if matching_rules else []
-    logger.info(f"Found {len(deterministic_entitlements)} rules in DB for {case_id}.")
 
-    # --- C. AI-Powered Explanation (LLM as a consultant) ---
-    context_for_llm = f"The following structured rules were found...\n\n{json.dumps(deterministic_entitlements, indent=2)}"
+    # --- C. Use the LLM to Explain the Facts ---
+    logger.info(f"Executing LLM agent to generate expert report for {case_id}...")
+    context_for_llm = f"The following structured rules were found to be applicable from the master rule database:\n\n{json.dumps(deterministic_entitlements, indent=2)}"
+    
     prompt = PromptTemplate.from_template(
         """You are a professional AI consultant specializing in the detailed analysis of municipal development regulations. Your task is to act as an expert consultant and provide a comprehensive, clear, and actionable report based on the provided context and the user's query.
 
@@ -65,21 +70,28 @@ def process_case_logic(case_data, system_state):
         {input}
         """
     )
+    
     llm_chain = prompt | system_state.llm
     summary_response = llm_chain.invoke({
-        "context": context_for_llm, "input": json.dumps(parameters),
+        "context": context_for_llm,
+        "input": json.dumps(parameters),
         "current_date": datetime.utcnow().strftime('%B %d, %Y'),
-        "plot_size": parameters.get("plot_size", "N/A"), "location": parameters.get("location", "N/A"),
-        "road_width": parameters.get("road_width", "N/A")
+        "plot_size": f'{parameters.get("plot_size", "N/A")} sq. m.',
+        "location": parameters.get("location", "N/A"),
+        "road_width": f'{parameters.get("road_width", "N/A")} m.'
     })
     analysis_report = summary_response.content
     logger.info(f"LLM expert report complete for {case_id}.")
 
-    # --- D. Run Specialist Deterministic Agents ---
-    entitlement_result = system_state.entitlement_agent.calculate("road_width_gt_18m_bonus")
-    envelope_result = system_state.envelope_agent.calculate(plot_area=parameters.get("plot_size", 0), setback_area=150)
+    # --- D. Run Specialist Agents (now stateless) ---
+    entitlement_agent = EntitlementsAgent({"road_width_gt_18m_bonus": 0.5})
+    envelope_agent = AllowableEnvelopeAgent()
+    interior_agent = InteriorDesignAgent()
+    geometry_agent = GeometryAgent()
+
+    entitlement_result = entitlement_agent.calculate("road_width_gt_18m_bonus")
+    envelope_result = envelope_agent.calculate(plot_area=parameters.get("plot_size", 0), setback_area=150)
     
-    # --- E. Run Interior Design Agent ---
     total_fsi = 1.0 
     if deterministic_entitlements:
         for ent in deterministic_entitlements:
@@ -88,43 +100,42 @@ def process_case_logic(case_data, system_state):
                 if isinstance(fsi_value, dict): total_fsi = fsi_value.get('max', 1.0)
                 elif isinstance(fsi_value, (int, float)): total_fsi = fsi_value
                 break 
+    
     total_bua = parameters.get("plot_size", 0) * total_fsi
-    interior_result = system_state.interior_agent.calculate_carpet_area(total_bua)
+    interior_result = interior_agent.calculate_carpet_area(total_bua)
 
-    # --- F. Run RL Agent for Optimal Policy Decision ---
+    # --- E. Run RL Agent for Optimal Policy Decision ---
     location_map = {"urban": 0, "suburban": 1, "rural": 2}
     rl_state_np = np.array([parameters.get("plot_size",0), location_map.get(parameters.get("location", "urban"),0), parameters.get("road_width",0)]).astype(np.float32)
     
-    # 1. Get the action prediction (predict is usually robust to numpy)
     action, _ = system_state.rl_agent.predict(rl_state_np, deterministic=True)
     rl_optimal_action = int(action)
 
-    # --- THE CRUCIAL FIX: Add the "Translator" ---
-    # 2. Convert the numpy state to a torch Tensor before getting the distribution
     rl_state_tensor = torch.as_tensor(rl_state_np, device=system_state.rl_agent.device).reshape(1, -1)
-    
-    # 3. Ask the policy for the full probability distribution
     distribution = system_state.rl_agent.policy.get_distribution(rl_state_tensor)
     action_probabilities = distribution.distribution.probs.detach().cpu().numpy()[0]
-    
-    # 4. The confidence is the probability of the action it chose
     confidence_score = float(action_probabilities[rl_optimal_action])
 
-    # --- G. Compile Final, Standardized Report ---
+    # --- F. Compile Final, Standardized Report ---
     final_report = { 
-        "project_id": project_id, "case_id": case_id, "city": city, "inputs": parameters,
+        "project_id": project_id,
+        "case_id": case_id,
+        "city": city,
+        "inputs": parameters,
         "entitlements": {
-            "analysis_summary": analysis_report, "rules_from_db": deterministic_entitlements,
+            "analysis_summary": analysis_report,
+            "rules_from_db": deterministic_entitlements,
             "carpet_area_sqm": interior_result.get("result_carpet_area_sqm")
         },
         "rl_decision": {
-            "optimal_action": rl_optimal_action, "confidence_score": round(confidence_score, 2)
+            "optimal_action": rl_optimal_action,
+            "confidence_score": round(confidence_score, 2)
         },
         "geometry_file": f"/outputs/projects/{project_id}/{case_id}_geometry.stl",
         "logs": f"/logs/{case_id}" 
     }
     
-    # --- H. Save Outputs ---
+    # --- G. Save Outputs ---
     output_dir = f"outputs/projects/{project_id}"
     os.makedirs(output_dir, exist_ok=True)
     json_output_path = os.path.join(output_dir, f"{case_id}_report.json")
@@ -134,9 +145,6 @@ def process_case_logic(case_data, system_state):
         json.dump(final_report, f, indent=4)
     
     height = total_fsi * 10 
-    system_state.geometry_agent.create_block(output_path=stl_output_path, width=np.sqrt(max(0, parameters.get("plot_size", 100))), depth=np.sqrt(max(0, parameters.get("plot_size", 100))), height=height)
+    geometry_agent.create_block(output_path=stl_output_path, width=np.sqrt(max(0, parameters.get("plot_size", 100))), depth=np.sqrt(max(0, parameters.get("plot_size", 100))), height=height)
     
     return final_report
-
-    
-
