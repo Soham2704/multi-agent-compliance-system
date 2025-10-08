@@ -172,7 +172,28 @@ def get_feedback_summary():
     except Exception as e:
         raise HTTPException(status_code=500, detail="Could not process feedback file.")
     return summary
-
+    
+@app.get("/projects/{project_id}/cases", summary="Get all case results for a specific project")
+def get_project_cases(project_id: str) -> List[Dict[str, Any]]:
+    """
+    Searches the output directory and returns a list of all report.json files
+    associated with the given project_id.
+    """
+    project_dir = f"outputs/projects/{project_id}"
+    if not os.path.exists(project_dir):
+        # Return an empty list if the project folder doesn't exist, which is a valid case.
+        return []
+    
+    project_reports = []
+    try:
+        for filename in os.listdir(project_dir):
+            if filename.endswith("_report.json"):
+                with open(os.path.join(project_dir, filename), 'r') as f:
+                    project_reports.append(json.load(f))
+    except Exception as e:
+        logger.error(f"Error reading reports for project {project_id}: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Error reading project reports.")
+    return project_reports
 # --- 8. Main execution block for running the server ---
 if __name__ == "__main__":
     print("--- Starting MCP-Integrated API Server with Uvicorn ---")

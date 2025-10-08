@@ -568,3 +568,7 @@
 {"timestamp": "2025-10-06T10:11:22.978908Z", "level": "INFO", "message": "Executing LLM agent to generate expert report for nashik_001...", "source": "MultiAgentSystem"}
 {"timestamp": "2025-10-06T10:11:55.908936Z", "level": "INFO", "message": "LLM expert report complete for nashik_001.", "source": "MultiAgentSystem"}
 {"timestamp": "2025-10-06T10:21:06.380103Z", "level": "INFO", "message": "Feedback saved via MCP for case nashik_001", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-08T03:46:06.845917Z", "level": "INFO", "message": "Server starting up... Initializing MCP Client and AI models.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-08T03:46:26.646141Z", "level": "INFO", "message": "All components and MCP Client initialized successfully. Server is ready.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-08T03:52:57.820683Z", "level": "INFO", "message": "Server starting up... Initializing MCP Client and AI models.", "source": "MultiAgentSystem"}
+{"timestamp": "2025-10-08T03:53:00.156052Z", "level": "INFO", "message": "All components and MCP Client initialized successfully. Server is ready.", "source": "MultiAgentSystem"}
